@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+@theme {
+  /* Base — grafite neutro de alto contraste */
+  --color-bg: #0d0e10;
+  --color-bg-alt: #16181b;
+  --color-surface: #1b1d21;
+  --color-border: #2a2d31;
+
+  /* Texto */
+  --color-fg: #edf0ee;
+  --color-fg-muted: #9aa0a6;
+
+  /* Accent — verde-limão vibrante, usado com moderação */
+  --color-accent: #c6ff3d;
+  --color-accent-2: #8fe637;
+  --color-accent-fg: #0d0e10;
+
+  --font-display: var(--font-space-grotesk);
+  --font-sans: var(--font-inter);
+}
+
+* {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-accent-fg);
+}
+
+/* Grid de fundo sutil */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgba(237, 240, 238, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(237, 240, 238, 0.06) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+/* Glow radial atrás do hero */
+.bg-hero-glow {
+  background: radial-gradient(
+      60% 50% at 50% 0%,
+      rgba(198, 255, 61, 0.16) 0%,
+      rgba(198, 255, 61, 0) 60%
+    ),
+    radial-gradient(40% 40% at 85% 15%, rgba(124, 224, 255, 0.08) 0%, rgba(124, 224, 255, 0) 60%);
+}
+
+/* Marquee infinito */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 28s linear infinite;
+}
+
+.marquee-group:hover .animate-marquee {
+  animation-play-state: paused;
+}
+
+/* Pulso do botão flutuante de WhatsApp */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
