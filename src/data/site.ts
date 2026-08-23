@@ -1,4 +1,4 @@
-// Constantes centrais da marca — edite aqui para atualizar o site inteiro.
+// Constantes centrais da marca. Edite aqui para atualizar o site inteiro.
 
 export const BRAND_NAME = "Hayaki";
 export const BRAND_SLOGAN = "Pode criar";

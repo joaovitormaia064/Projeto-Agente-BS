@@ -35,12 +35,20 @@ body {
   color: var(--color-accent-fg);
 }
 
-/* Grid de fundo sutil */
-.bg-grid {
-  background-image:
-    linear-gradient(to right, rgba(237, 240, 238, 0.06) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(237, 240, 238, 0.06) 1px, transparent 1px);
-  background-size: 56px 56px;
+/* Trama de pontos com deriva lenta, atrás do hero */
+.bg-dotfield {
+  background-image: radial-gradient(rgba(237, 240, 238, 0.16) 1px, transparent 1px);
+  background-size: 34px 34px;
+  animation: dotfield-drift 40s linear infinite;
+}
+
+@keyframes dotfield-drift {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -340px 170px;
+  }
 }
 
 /* Glow radial atrás do hero */
@@ -71,20 +79,24 @@ body {
   animation-play-state: paused;
 }
 
-/* Pulso do botão flutuante de WhatsApp */
+/* Pulso periódico do botão flutuante de WhatsApp: um respiro breve a cada poucos segundos */
 @keyframes pulse-ring {
   0% {
     transform: scale(1);
-    opacity: 0.55;
+    opacity: 0.5;
+  }
+  18% {
+    transform: scale(1.7);
+    opacity: 0;
   }
   100% {
-    transform: scale(1.9);
+    transform: scale(1.7);
     opacity: 0;
   }
 }
 
 .animate-pulse-ring {
-  animation: pulse-ring 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  animation: pulse-ring 4.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

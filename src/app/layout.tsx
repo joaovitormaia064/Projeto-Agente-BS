@@ -20,7 +20,7 @@ const siteUrl = "https://hayaki.dev";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Hayaki — Pode criar",
+  title: "Hayaki | Pode criar",
   description:
     "A Hayaki desenvolve sites, landing pages e sistemas web sob medida para negócios que querem crescer com tecnologia de verdade. Peça seu orçamento pelo WhatsApp.",
   keywords: [
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     icon: "/favicon.svg",
   },
   openGraph: {
-    title: "Hayaki — Pode criar",
+    title: "Hayaki | Pode criar",
     description:
       "Sites, landing pages e sistemas web sob medida. Tecnologia e design a serviço do seu negócio.",
     url: siteUrl,
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Hayaki — Pode criar",
+    title: "Hayaki | Pode criar",
     description:
       "Sites, landing pages e sistemas web sob medida. Tecnologia e design a serviço do seu negócio.",
   },

@@ -7,7 +7,7 @@ const etapas = [
   {
     numero: "01",
     titulo: "Briefing",
-    descricao: "Conversamos sobre objetivos, prazo e orçamento — sem enrolação.",
+    descricao: "Conversamos sobre objetivos, prazo e orçamento, direto ao ponto.",
   },
   {
     numero: "02",

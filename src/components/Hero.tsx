@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 import { ArrowUpRight, Gauge, Code2, TrendingUp } from "lucide-react";
 import { whatsappLink } from "@/data/site";
 
@@ -12,14 +13,28 @@ const badges = [
 
 export function Hero() {
   const reduceMotion = useReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const dotfieldY = useTransform(scrollYProgress, [0, 1], [0, 120]);
+  const glowY = useTransform(scrollYProgress, [0, 1], [0, 70]);
 
   return (
     <section
       id="top"
+      ref={sectionRef}
       className="relative flex min-h-[92svh] items-center overflow-hidden pt-28 pb-20"
     >
-      <div className="pointer-events-none absolute inset-0 bg-grid [mask-image:radial-gradient(ellipse_70%_60%_at_50%_20%,black,transparent)]" />
-      <div className="pointer-events-none absolute inset-0 bg-hero-glow" />
+      <motion.div
+        style={reduceMotion ? undefined : { y: dotfieldY }}
+        className="pointer-events-none absolute inset-0 bg-dotfield [mask-image:radial-gradient(ellipse_70%_60%_at_50%_20%,black,transparent)]"
+      />
+      <motion.div
+        style={reduceMotion ? undefined : { y: glowY }}
+        className="pointer-events-none absolute inset-0 bg-hero-glow"
+      />
 
       <div className="relative mx-auto flex max-w-5xl flex-col items-center px-6 text-center">
         <motion.span
@@ -49,7 +64,7 @@ export function Hero() {
           className="mt-6 max-w-2xl text-balance text-lg text-fg-muted md:text-xl"
         >
           A Hayaki projeta e desenvolve sites, landing pages e sistemas web sob
-          encomenda — com design que impressiona e código que aguenta escala.
+          encomenda, com design que impressiona e código que aguenta escala.
         </motion.p>
 
         <motion.div
