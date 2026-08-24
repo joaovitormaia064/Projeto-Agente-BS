@@ -2,15 +2,19 @@
 
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { ArrowUpRight, Gauge, Code2, TrendingUp } from "lucide-react";
+import { ArrowUpRight, PenTool, CalendarCheck, LifeBuoy } from "lucide-react";
 import { whatsappLink } from "@/data/site";
 import { Gear } from "./Gear";
 import { ScrollCue } from "./ScrollCue";
 
-const badges = [
-  { label: "Performance", icon: Gauge },
-  { label: "Código sob medida", icon: Code2 },
-  { label: "Escalabilidade", icon: TrendingUp },
+/**
+ * Promessas concretas de como o trabalho acontece, em vez de atributos
+ * técnicos soltos, que dizem pouco para quem está contratando.
+ */
+const compromissos = [
+  { label: "Do zero, sem tema pronto", icon: PenTool },
+  { label: "Prazo fechado no orçamento", icon: CalendarCheck },
+  { label: "Suporte após o lançamento", icon: LifeBuoy },
 ];
 
 export function Hero() {
@@ -113,14 +117,16 @@ export function Hero() {
           initial={reduceMotion ? undefined : { opacity: 0, y: 20 }}
           animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.4 }}
-          className="mt-14 flex flex-wrap items-center justify-center gap-3"
+          className="mt-14 flex flex-col items-center gap-4 text-sm text-fg-muted md:flex-row md:gap-0"
         >
-          {badges.map(({ label, icon: Icon }) => (
+          {compromissos.map(({ label, icon: Icon }, i) => (
             <span
               key={label}
-              className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/60 px-4 py-2 text-sm font-medium text-fg-muted"
+              className={`inline-flex items-center gap-2 whitespace-nowrap font-medium md:px-4 ${
+                i > 0 ? "md:border-l md:border-border" : ""
+              }`}
             >
-              <Icon className="h-4 w-4 text-accent" strokeWidth={2} />
+              <Icon className="h-4 w-4 flex-shrink-0 text-accent" strokeWidth={2} />
               {label}
             </span>
           ))}
