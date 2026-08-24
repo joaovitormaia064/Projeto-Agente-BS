@@ -1,45 +1,100 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import Image from "next/image";
-import { ArrowLeft, ArrowRight, ArrowUpRight, FolderSearch } from "lucide-react";
+import { useMemo, useRef, useState } from "react";
+import { ArrowLeft, ArrowRight, FolderSearch, Play, X } from "lucide-react";
 import { SectionLabel } from "./SectionLabel";
 import { Reveal } from "./Reveal";
 import { PORTFOLIO_FILTERS, PROJECTS, type Project } from "@/data/portfolio";
 
-function PeekFrame({ projeto, side }: { projeto: Project; side: "left" | "right" }) {
+function ProjectCard({ projeto, onOpen }: { projeto: Project; onOpen: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onOpen}
+      className="group relative w-[82%] flex-shrink-0 snap-start overflow-hidden rounded-2xl border border-border bg-surface text-left transition-colors duration-300 hover:border-accent/60 sm:w-[46%] lg:w-[31%]"
+    >
+      <div className="relative aspect-[4/3] w-full overflow-hidden">
+        <div
+          style={{ backgroundImage: `url(${projeto.imagemLonga})` }}
+          className="absolute inset-0 origin-top bg-[length:100%_auto] bg-top transition-[background-position,transform] duration-[6000ms] ease-out group-hover:bg-bottom group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/10 to-transparent opacity-90 transition-opacity duration-300 group-hover:opacity-100" />
+
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="flex h-14 w-14 scale-75 items-center justify-center rounded-full bg-accent text-accent-fg opacity-0 shadow-[0_8px_24px_rgba(198,255,61,0.4)] transition-all duration-300 group-hover:scale-100 group-hover:opacity-100">
+            <Play className="ml-0.5 h-5 w-5" fill="currentColor" strokeWidth={0} />
+          </span>
+        </div>
+
+        <div className="absolute inset-x-0 bottom-0 p-5">
+          <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-accent">
+            {projeto.rotulo}
+          </span>
+          <h3 className="mt-1 font-display text-lg font-semibold text-fg">{projeto.nome}</h3>
+          <div className="mt-2 flex flex-wrap gap-1.5 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            {projeto.tecnologias.map((tech) => (
+              <span
+                key={tech}
+                className="rounded-full border border-border bg-bg/60 px-2 py-0.5 text-[11px] text-fg-muted"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </button>
+  );
+}
+
+function PreviewModal({ projeto, onClose }: { projeto: Project; onClose: () => void }) {
   return (
     <div
-      className={`relative hidden aspect-[3/4] w-[13%] flex-none overflow-hidden rounded-2xl border border-border opacity-70 sm:block`}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-bg/90 p-4 backdrop-blur-sm sm:p-8"
+      onClick={onClose}
     >
-      <Image src={projeto.imagem} alt="" fill sizes="10vw" className="object-cover object-top" />
       <div
-        className={`absolute inset-0 ${
-          side === "left"
-            ? "bg-gradient-to-r from-bg/10 via-bg/50 to-bg/85"
-            : "bg-gradient-to-l from-bg/10 via-bg/50 to-bg/85"
-        }`}
-      />
+        className="relative flex aspect-video w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-border bg-bg-alt shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex h-10 flex-shrink-0 items-center justify-between border-b border-border bg-surface px-4">
+          <span className="truncate text-sm font-medium text-fg-muted">{projeto.nome}</span>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Fechar prévia"
+            className="flex h-7 w-7 items-center justify-center rounded-full text-fg-muted transition-colors hover:bg-bg hover:text-fg"
+          >
+            <X className="h-4 w-4" strokeWidth={2.5} />
+          </button>
+        </div>
+        <iframe
+          src={projeto.preview}
+          title={`Site real: ${projeto.nome}`}
+          className="h-full w-full flex-1 border-0 bg-white"
+        />
+      </div>
     </div>
   );
 }
 
 export function Portfolio() {
   const [filtro, setFiltro] = useState<(typeof PORTFOLIO_FILTERS)[number]>("Todos");
-  const [index, setIndex] = useState(0);
+  const [aberto, setAberto] = useState<Project | null>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
 
   const projetos = useMemo(
     () => (filtro === "Todos" ? PROJECTS : PROJECTS.filter((p) => p.categoria === filtro)),
     [filtro]
   );
 
-  const n = projetos.length;
-  const safeIndex = n ? index % n : 0;
-  const atual = projetos[safeIndex];
-  const anterior = n > 2 ? projetos[(safeIndex - 1 + n) % n] : undefined;
-  const proximo = n > 2 ? projetos[(safeIndex + 1) % n] : undefined;
-
-  const goTo = (i: number) => setIndex((i + n) % n);
+  const scrollByCard = (dir: 1 | -1) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const card = track.querySelector("button");
+    const amount = card ? card.clientWidth + 24 : 320;
+    track.scrollBy({ left: dir * amount, behavior: "smooth" });
+  };
 
   return (
     <section id="portfolio" className="border-t border-border py-24 md:py-32">
@@ -57,10 +112,7 @@ export function Portfolio() {
               <button
                 key={cat}
                 type="button"
-                onClick={() => {
-                  setFiltro(cat);
-                  setIndex(0);
-                }}
+                onClick={() => setFiltro(cat)}
                 className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
                   filtro === cat
                     ? "border-accent bg-accent text-accent-fg"
@@ -73,133 +125,39 @@ export function Portfolio() {
           </div>
         </Reveal>
 
-        {n > 0 && atual ? (
+        {projetos.length > 0 ? (
           <Reveal delay={0.1} className="mt-14">
-            <div className="relative overflow-hidden rounded-[28px] border border-border bg-gradient-to-b from-bg-alt to-bg px-4 py-8 sm:px-8 sm:py-10">
-              <div className="pointer-events-none absolute inset-0 bg-dotfield opacity-30 [mask-image:radial-gradient(ellipse_80%_70%_at_50%_30%,black,transparent)]" />
-
-              <div className="relative flex items-end justify-between gap-4">
-                <div>
-                  <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">
-                    {atual.categoria} · {String(safeIndex + 1).padStart(2, "0")} de {String(n).padStart(2, "0")}
-                  </span>
-                  <p className="mt-1 text-sm font-medium text-fg-muted">{atual.nome}</p>
-                </div>
-                <span className="hidden rounded-full border border-border bg-surface/70 px-3 py-1 text-xs font-medium text-fg-muted sm:inline-flex">
-                  {atual.rotulo}
-                </span>
+            <div className="mb-5 flex items-center justify-between">
+              <p className="text-sm text-fg-muted">
+                Passe o mouse para ver mais da página. Clique para navegar de verdade.
+              </p>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => scrollByCard(-1)}
+                  aria-label="Anterior"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-fg transition-colors hover:border-accent hover:text-accent"
+                >
+                  <ArrowLeft className="h-4 w-4" strokeWidth={2.5} />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => scrollByCard(1)}
+                  aria-label="Próximo"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-fg transition-colors hover:border-accent hover:text-accent"
+                >
+                  <ArrowRight className="h-4 w-4" strokeWidth={2.5} />
+                </button>
               </div>
-
-              <div className="relative mt-6 flex items-center justify-center gap-3 sm:gap-5">
-                {anterior && <PeekFrame projeto={anterior} side="left" />}
-
-                <div className="group relative aspect-video flex-1 overflow-hidden rounded-[20px] border border-border bg-bg-alt shadow-[0_30px_60px_-18px_rgba(0,0,0,0.5)]">
-                  <div className="flex h-7 items-center gap-1.5 border-b border-border bg-surface px-3">
-                    <span className="h-2 w-2 rounded-full bg-fg-muted/40" />
-                    <span className="h-2 w-2 rounded-full bg-fg-muted/40" />
-                    <span className="h-2 w-2 rounded-full bg-fg-muted/40" />
-                    <span className="ml-2 truncate text-[11px] text-fg-muted">{atual.preview}</span>
-                  </div>
-                  <iframe
-                    key={atual.preview}
-                    src={atual.preview}
-                    title={`Site real: ${atual.nome}`}
-                    loading="lazy"
-                    className="h-[calc(100%-28px)] w-full border-0 bg-white"
-                  />
-
-                  {n > 1 && (
-                    <>
-                      <button
-                        type="button"
-                        onClick={() => goTo(safeIndex - 1)}
-                        aria-label="Projeto anterior"
-                        className="absolute left-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-bg/80 text-fg opacity-0 backdrop-blur transition-opacity group-hover:opacity-100 hover:border-accent hover:text-accent"
-                      >
-                        <ArrowLeft className="h-4 w-4" strokeWidth={2.5} />
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => goTo(safeIndex + 1)}
-                        aria-label="Próximo projeto"
-                        className="absolute right-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-bg/80 text-fg opacity-0 backdrop-blur transition-opacity group-hover:opacity-100 hover:border-accent hover:text-accent"
-                      >
-                        <ArrowRight className="h-4 w-4" strokeWidth={2.5} />
-                      </button>
-                    </>
-                  )}
-                </div>
-
-                {proximo && <PeekFrame projeto={proximo} side="right" />}
-              </div>
-
-              {n > 1 && (
-                <>
-                  <div className="relative mx-auto mt-6 h-1 w-full max-w-xs overflow-hidden rounded-full bg-border sm:max-w-sm">
-                    <div
-                      className="h-full rounded-full bg-accent transition-all duration-500"
-                      style={{ width: `${((safeIndex + 1) / n) * 100}%` }}
-                    />
-                  </div>
-
-                  <div className="relative mt-4 flex items-center justify-center gap-2">
-                    {projetos.map((p, i) => (
-                      <button
-                        key={p.nome}
-                        type="button"
-                        onClick={() => setIndex(i)}
-                        aria-label={`Ir para o projeto ${p.nome}`}
-                        className={`h-2 rounded-full transition-all ${
-                          i === safeIndex ? "w-6 bg-accent" : "w-2 bg-border hover:bg-fg-muted"
-                        }`}
-                      />
-                    ))}
-                  </div>
-
-                  <div className="relative mt-7 flex justify-center gap-3">
-                    {projetos.map((p, i) => (
-                      <button
-                        key={p.nome}
-                        type="button"
-                        onClick={() => setIndex(i)}
-                        aria-label={`Ver ${p.nome}`}
-                        className={`relative aspect-[16/10] overflow-hidden rounded-lg border border-border transition-all ${
-                          i === safeIndex
-                            ? "w-20 opacity-100 ring-2 ring-accent ring-offset-2 ring-offset-bg sm:w-24"
-                            : "w-16 opacity-50 hover:opacity-80 sm:w-20"
-                        }`}
-                      >
-                        <Image src={p.imagem} alt={p.nome} fill sizes="120px" className="object-cover object-top" />
-                      </button>
-                    ))}
-                  </div>
-                </>
-              )}
             </div>
 
-            <div className="mt-6 flex flex-col items-center gap-3 text-center">
-              <p className="max-w-xl text-sm leading-relaxed text-fg-muted sm:text-base">
-                {atual.descricao}
-              </p>
-              <div className="flex flex-wrap justify-center gap-1.5">
-                {atual.tecnologias.map((tech) => (
-                  <span
-                    key={tech}
-                    className="rounded-full border border-border px-2.5 py-1 text-xs text-fg-muted"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-              <a
-                href={atual.preview}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-accent"
-              >
-                Abrir site completo
-                <ArrowUpRight className="h-4 w-4" strokeWidth={2.5} />
-              </a>
+            <div
+              ref={trackRef}
+              className="flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            >
+              {projetos.map((projeto) => (
+                <ProjectCard key={projeto.nome} projeto={projeto} onOpen={() => setAberto(projeto)} />
+              ))}
             </div>
           </Reveal>
         ) : (
@@ -214,6 +172,8 @@ export function Portfolio() {
           </div>
         )}
       </div>
+
+      {aberto && <PreviewModal projeto={aberto} onClose={() => setAberto(null)} />}
     </section>
   );
 }
