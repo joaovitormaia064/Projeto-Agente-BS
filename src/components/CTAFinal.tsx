@@ -5,7 +5,7 @@ import { whatsappLink } from "@/data/site";
 
 export function CTAFinal() {
   return (
-    <section className="px-6 py-24 md:py-32">
+    <section className="px-6 py-24 md:py-28">
       <Reveal className="mx-auto max-w-6xl">
         <div className="relative overflow-hidden rounded-3xl bg-accent px-8 py-14 text-center text-accent-fg sm:px-16 md:py-20">
           <div

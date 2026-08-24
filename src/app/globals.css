@@ -24,6 +24,11 @@
   scroll-behavior: smooth;
 }
 
+html {
+  /* Sem isto o navegador desenha a barra de rolagem clara sobre a página escura. */
+  color-scheme: dark;
+}
+
 body {
   background: var(--color-bg);
   color: var(--color-fg);

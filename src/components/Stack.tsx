@@ -33,7 +33,7 @@ export function Stack() {
   const transform = useMotionTemplate`translateX(${xPercent}%)`;
 
   return (
-    <section id="stack" ref={sectionRef} className="border-t border-border py-24 md:py-32">
+    <section id="stack" ref={sectionRef} className="border-t border-border py-24 md:py-28">
       <div className="mx-auto max-w-6xl px-6">
         <Reveal>
           <SectionLabel>Stack tecnológica</SectionLabel>

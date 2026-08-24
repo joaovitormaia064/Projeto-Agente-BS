@@ -44,7 +44,7 @@ const servicos = [
 
 export function Servicos() {
   return (
-    <section id="servicos" className="border-t border-border py-24 md:py-32">
+    <section id="servicos" className="border-t border-border py-24 md:py-28">
       <div className="mx-auto max-w-6xl px-6">
         <Reveal>
           <SectionLabel>O que fazemos</SectionLabel>
