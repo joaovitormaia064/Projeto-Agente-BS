@@ -3,10 +3,11 @@ import { SectionLabel } from "./SectionLabel";
 import { Reveal } from "./Reveal";
 
 /** Medidas da peça, em unidades do viewBox. */
-const L = 124; // largura
-const A = 78; // altura
-const R = 10; // raio do encaixe
+const L = 112; // largura
+const A = 68; // altura
+const R = 9; // raio do encaixe
 const M = R + 3; // folga no SVG para o encaixe não ser cortado
+const PASSO = 20; // espaço entre uma peça e a seguinte
 
 type Encaixe = -1 | 0 | 1;
 
@@ -78,7 +79,7 @@ function caminhoDaPeca(cima: Encaixe, direita: Encaixe, baixo: Encaixe, esquerda
 
 export function Stack() {
   return (
-    <section id="stack" className="border-t border-border py-24 md:py-28">
+    <section id="stack" className="border-t border-border py-20 md:py-24">
       <div className="mx-auto max-w-6xl px-6">
         <Reveal>
           <SectionLabel>Stack tecnológica</SectionLabel>
@@ -86,16 +87,22 @@ export function Stack() {
             As peças certas para cada projeto.
           </h2>
         </Reveal>
+      </div>
 
-        <Reveal delay={0.1}>
-          <div className="mt-12 grid w-fit grid-cols-2 items-center gap-x-5 gap-y-8 sm:grid-cols-3 lg:grid-cols-5">
-            {PECAS.map((peca) => (
+      {/* A faixa atravessa a tela inteira e some nas bordas, para a fila não
+          parecer ter fim. A lista vai duplicada: o desfile anda meia largura
+          e reinicia no ponto exato, sem emenda visível. */}
+      <Reveal delay={0.1}>
+        <div className="mt-10 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+          <div className="flex w-max animate-desfilar py-6 hover:[animation-play-state:paused]">
+            {[...PECAS, ...PECAS].map((peca, i) => (
               <div
-                key={peca.nome}
+                key={`${peca.nome}-${i}`}
                 style={
                   {
                     width: L,
                     height: A,
+                    marginRight: PASSO,
                     "--y0": `${peca.desloca}px`,
                     "--y1": `${peca.desloca - peca.sobe}px`,
                     "--r0": `${peca.gira[0]}deg`,
@@ -104,34 +111,29 @@ export function Stack() {
                     animationDelay: `-${peca.atraso}s`,
                   } as CSSProperties
                 }
-                className="group relative animate-flutuar hover:[animation-play-state:paused]"
+                className="group/peca relative animate-flutuar hover:[animation-play-state:paused]"
               >
                 <svg
                   viewBox={`${-M} ${-M} ${L + M * 2} ${A + M * 2}`}
-                  className="absolute overflow-visible transition-transform duration-300 group-hover:scale-110"
+                  className="absolute overflow-visible transition-transform duration-300 group-hover/peca:scale-110"
                   style={{ left: -M, top: -M, width: L + M * 2, height: A + M * 2 }}
                   aria-hidden
                 >
                   <path
                     d={caminhoDaPeca(...peca.lados)}
-                    className="fill-surface stroke-border transition-colors duration-300 group-hover:fill-accent/10 group-hover:stroke-accent"
+                    className="fill-surface stroke-border transition-colors duration-300 group-hover/peca:fill-accent/10 group-hover/peca:stroke-accent"
                     strokeWidth={1.5}
                   />
                 </svg>
 
-                <span className="pointer-events-none absolute inset-0 flex items-center justify-center px-3 text-center font-display text-[13px] font-medium text-fg-muted transition-colors duration-300 group-hover:text-accent">
+                <span className="pointer-events-none absolute inset-0 flex items-center justify-center px-3 text-center font-display text-[13px] font-medium text-fg-muted transition-colors duration-300 group-hover/peca:text-accent">
                   {peca.nome}
                 </span>
               </div>
             ))}
-
           </div>
-
-          <p className="mt-8 text-xs text-fg-muted/60">
-            e outras, conforme o projeto pedir.
-          </p>
-        </Reveal>
-      </div>
+        </div>
+      </Reveal>
     </section>
   );
 }

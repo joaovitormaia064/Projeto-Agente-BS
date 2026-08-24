@@ -56,6 +56,21 @@ body {
     radial-gradient(40% 40% at 85% 15%, rgba(124, 224, 255, 0.08) 0%, rgba(124, 224, 255, 0) 60%);
 }
 
+/* Desfile contínuo da faixa da stack: a lista vai duplicada, então andar
+   metade da largura recomeça exatamente no mesmo ponto, sem emenda. */
+@keyframes desfilar {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-desfilar {
+  animation: desfilar 40s linear infinite;
+}
+
 /* Deriva das peças de quebra-cabeça da stack */
 @keyframes flutuar {
   from {
