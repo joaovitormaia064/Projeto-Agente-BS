@@ -51,6 +51,28 @@ body {
     radial-gradient(40% 40% at 85% 15%, rgba(124, 224, 255, 0.08) 0%, rgba(124, 224, 255, 0) 60%);
 }
 
+/* Convite de scroll: um traço que desce pela linha do hero */
+@keyframes scroll-cue {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(300%);
+    opacity: 0;
+  }
+}
+
+.animate-scroll-cue {
+  animation: scroll-cue 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
 /* Pulso periódico do botão flutuante de WhatsApp: um respiro breve a cada poucos segundos */
 @keyframes pulse-ring {
   0% {

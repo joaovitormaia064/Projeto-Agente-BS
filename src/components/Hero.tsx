@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { ArrowUpRight, Gauge, Code2, TrendingUp } from "lucide-react";
 import { whatsappLink } from "@/data/site";
 import { Gear } from "./Gear";
+import { ScrollCue } from "./ScrollCue";
 
 const badges = [
   { label: "Performance", icon: Gauge },
@@ -125,6 +126,8 @@ export function Hero() {
           ))}
         </motion.div>
       </div>
+
+      <ScrollCue />
     </section>
   );
 }
