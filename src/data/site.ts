@@ -16,7 +16,7 @@ export function whatsappLink(message: string = WHATSAPP_DEFAULT_MESSAGE) {
 }
 
 export const NAV_LINKS = [
-  { label: "Serviços", href: "#servicos" },
+  { label: "Soluções", href: "#servicos" },
   { label: "Stack", href: "#stack" },
   { label: "Processo", href: "#processo" },
   { label: "Portfólio", href: "#portfolio" },

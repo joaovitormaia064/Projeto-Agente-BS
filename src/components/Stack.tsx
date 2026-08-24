@@ -1,32 +1,36 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import type { CSSProperties } from "react";
 import { SectionLabel } from "./SectionLabel";
 import { Reveal } from "./Reveal";
 
-const TECNOLOGIAS = [
-  "React",
-  "Next.js",
-  "TypeScript",
-  "Tailwind",
-  "Node.js",
-  "PostgreSQL",
-  "Framer Motion",
-  "Figma",
-  "AWS",
-  "Vercel",
-  "Docker",
-  "GraphQL",
-];
-
 /** Medidas da peça, em unidades do viewBox. */
-const L = 200; // largura
-const A = 118; // altura
-const R = 13; // raio do encaixe
+const L = 124; // largura
+const A = 78; // altura
+const R = 10; // raio do encaixe
 const M = R + 3; // folga no SVG para o encaixe não ser cortado
 
 type Encaixe = -1 | 0 | 1;
+
+/**
+ * Peças soltas: cada uma tem o seu próprio recorte e a sua própria deriva.
+ * As fases e durações são diferentes de propósito, para o conjunto nunca
+ * pulsar em bloco e o movimento parecer natural.
+ */
+const PECAS: {
+  nome: string;
+  lados: [Encaixe, Encaixe, Encaixe, Encaixe]; // cima, direita, baixo, esquerda
+  desloca: number; // desalinhamento vertical em repouso
+  sobe: number; // amplitude da flutuação
+  gira: [number, number]; // rotação de partida e de chegada
+  duracao: number;
+  atraso: number;
+}[] = [
+  { nome: "React", lados: [0, 1, -1, 0], desloca: 6, sobe: 9, gira: [-3, -1], duracao: 6.5, atraso: 0 },
+  { nome: "Next.js", lados: [-1, 0, 1, 1], desloca: -10, sobe: 7, gira: [2, 4], duracao: 7.8, atraso: 0.9 },
+  { nome: "TypeScript", lados: [1, -1, 0, 0], desloca: 12, sobe: 11, gira: [-1, -4], duracao: 5.9, atraso: 1.7 },
+  { nome: "Node.js", lados: [0, 1, 1, -1], desloca: -6, sobe: 8, gira: [3, 1], duracao: 8.4, atraso: 0.4 },
+  { nome: "Tailwind", lados: [-1, 0, 0, 1], desloca: 9, sobe: 10, gira: [-2, -5], duracao: 6.9, atraso: 2.3 },
+  { nome: "PostgreSQL", lados: [1, -1, -1, 0], desloca: -12, sobe: 7, gira: [4, 2], duracao: 7.3, atraso: 1.2 },
+];
 
 /**
  * Desenha uma peça de quebra-cabeça. Cada lado pode ser reto (0), ter uma
@@ -68,126 +72,76 @@ function caminhoDaPeca(cima: Encaixe, direita: Encaixe, baixo: Encaixe, esquerda
   return d.join(" ");
 }
 
-/** Uma saliência de um lado exige a reentrância correspondente no vizinho. */
-function ladosDaPeca(col: number, linha: number, colunas: number, linhas: number) {
-  const vertical = (c: number, l: number): Encaixe => ((c + l) % 2 === 0 ? 1 : -1);
-  const horizontal = (c: number, l: number): Encaixe => ((c + l) % 2 === 0 ? -1 : 1);
-
-  return {
-    cima: linha === 0 ? (0 as Encaixe) : ((-horizontal(col, linha - 1)) as Encaixe),
-    direita: col === colunas - 1 ? (0 as Encaixe) : vertical(col, linha),
-    baixo: linha === linhas - 1 ? (0 as Encaixe) : horizontal(col, linha),
-    esquerda: col === 0 ? (0 as Encaixe) : ((-vertical(col - 1, linha)) as Encaixe),
-  };
-}
-
-/** Mede o espaço disponível para escolher o número de colunas e o tamanho da peça. */
-function useMedidas() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [largura, setLargura] = useState(0);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const ro = new ResizeObserver(([entrada]) => setLargura(entrada.contentRect.width));
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
-
-  const colunas = largura < 560 ? 2 : largura < 900 ? 3 : 4;
-  // As peças encolhem juntas, então os encaixes continuam batendo.
-  const escala = largura > 0 ? Math.min(1, largura / (colunas * L)) : 1;
-
-  return { ref, largura, colunas, escala };
-}
-
 export function Stack() {
-  const reduzirMovimento = useReducedMotion();
-  const { ref, largura, colunas, escala } = useMedidas();
-  const linhas = Math.ceil(TECNOLOGIAS.length / colunas);
-  const l = L * escala;
-  const a = A * escala;
-  const m = M * escala;
-
   return (
     <section id="stack" className="border-t border-border py-24 md:py-28">
       <div className="mx-auto max-w-6xl px-6">
         <Reveal>
           <SectionLabel>Stack tecnológica</SectionLabel>
           <h2 className="mt-4 max-w-2xl font-display text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl">
-            As peças certas para cada tipo de projeto.
+            As peças certas para cada projeto.
           </h2>
-          <p className="mt-4 max-w-xl text-base text-fg-muted">
-            Nada de template pronto: escolhemos e encaixamos a tecnologia conforme o que o
-            seu projeto precisa.
-          </p>
         </Reveal>
 
-        <div ref={ref} className="mt-14">
-        {largura > 0 && (
-        <motion.div
-          initial="fora"
-          whileInView="encaixada"
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ staggerChildren: 0.06 }}
-          className="mx-auto grid w-fit"
-          style={{ gridTemplateColumns: `repeat(${colunas}, ${l}px)` }}
-        >
-          {TECNOLOGIAS.map((tech, i) => {
-            const col = i % colunas;
-            const linha = Math.floor(i / colunas);
-            const lados = ladosDaPeca(col, linha, colunas, linhas);
-
-            // As peças chegam de fora, cada uma do seu lado, e assentam no lugar.
-            const dx = (col - (colunas - 1) / 2) * 26;
-            const dy = (linha - (linhas - 1) / 2) * 18;
-
-            return (
-              <motion.div
-                key={tech}
-                variants={
-                  reduzirMovimento
-                    ? undefined
-                    : {
-                        fora: { opacity: 0, x: dx, y: dy, scale: 0.94, rotate: dx > 0 ? 2 : -2 },
-                        encaixada: {
-                          opacity: 1,
-                          x: 0,
-                          y: 0,
-                          scale: 1,
-                          rotate: 0,
-                          transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] },
-                        },
-                      }
+        <Reveal delay={0.1}>
+          <div className="mt-12 flex flex-wrap items-center justify-center gap-x-5 gap-y-8 sm:justify-start">
+            {PECAS.map((peca) => (
+              <div
+                key={peca.nome}
+                style={
+                  {
+                    width: L,
+                    height: A,
+                    "--y0": `${peca.desloca}px`,
+                    "--y1": `${peca.desloca - peca.sobe}px`,
+                    "--r0": `${peca.gira[0]}deg`,
+                    "--r1": `${peca.gira[1]}deg`,
+                    animationDuration: `${peca.duracao}s`,
+                    animationDelay: `-${peca.atraso}s`,
+                  } as CSSProperties
                 }
-                className="group relative"
-                style={{ width: l, height: a }}
+                className="group relative animate-flutuar hover:[animation-play-state:paused]"
               >
                 <svg
                   viewBox={`${-M} ${-M} ${L + M * 2} ${A + M * 2}`}
-                  className="absolute overflow-visible"
-                  style={{ left: -m, top: -m, width: l + m * 2, height: a + m * 2 }}
+                  className="absolute overflow-visible transition-transform duration-300 group-hover:scale-110"
+                  style={{ left: -M, top: -M, width: L + M * 2, height: A + M * 2 }}
                   aria-hidden
                 >
                   <path
-                    d={caminhoDaPeca(lados.cima, lados.direita, lados.baixo, lados.esquerda)}
+                    d={caminhoDaPeca(...peca.lados)}
                     className="fill-surface stroke-border transition-colors duration-300 group-hover:fill-accent/10 group-hover:stroke-accent"
                     strokeWidth={1.5}
                   />
                 </svg>
 
-                <span
-                  className="pointer-events-none absolute inset-0 flex items-center justify-center px-4 text-center font-display font-medium text-fg-muted transition-colors duration-300 group-hover:text-accent"
-                  style={{ fontSize: Math.max(11, 14 * escala) }}
-                >
-                  {tech}
+                <span className="pointer-events-none absolute inset-0 flex items-center justify-center px-3 text-center font-display text-[13px] font-medium text-fg-muted transition-colors duration-300 group-hover:text-accent">
+                  {peca.nome}
                 </span>
-              </motion.div>
-            );
-          })}
-        </motion.div>
-        )}
-        </div>
+              </div>
+            ))}
+
+            {/* A peça que falta: sugere que a estante não termina aqui. */}
+            <div style={{ width: L, height: A }} className="relative">
+              <svg
+                viewBox={`${-M} ${-M} ${L + M * 2} ${A + M * 2}`}
+                className="absolute overflow-visible"
+                style={{ left: -M, top: -M, width: L + M * 2, height: A + M * 2 }}
+                aria-hidden
+              >
+                <path
+                  d={caminhoDaPeca(0, 0, 1, -1)}
+                  className="fill-none stroke-border"
+                  strokeWidth={1.5}
+                  strokeDasharray="5 6"
+                />
+              </svg>
+              <span className="pointer-events-none absolute inset-0 flex items-center justify-center px-3 text-center font-display text-[13px] font-medium text-fg-muted/70">
+                e muito mais
+              </span>
+            </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

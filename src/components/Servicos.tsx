@@ -49,7 +49,7 @@ export function Servicos() {
         <Reveal>
           <SectionLabel>O que fazemos</SectionLabel>
           <h2 className="mt-4 max-w-2xl font-display text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl">
-            Serviços pensados para cada etapa do seu produto digital.
+            Soluções pensadas para cada etapa do seu produto digital.
           </h2>
         </Reveal>
 

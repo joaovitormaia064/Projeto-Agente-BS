@@ -56,6 +56,23 @@ body {
     radial-gradient(40% 40% at 85% 15%, rgba(124, 224, 255, 0.08) 0%, rgba(124, 224, 255, 0) 60%);
 }
 
+/* Deriva das peças de quebra-cabeça da stack */
+@keyframes flutuar {
+  from {
+    transform: translateY(var(--y0)) rotate(var(--r0));
+  }
+  to {
+    transform: translateY(var(--y1)) rotate(var(--r1));
+  }
+}
+
+.animate-flutuar {
+  animation-name: flutuar;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
 /* Pontinhos de "digitando..." no chat */
 @keyframes chat-dot {
   0%,
