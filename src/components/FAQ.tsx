@@ -8,6 +8,11 @@ import { Reveal } from "./Reveal";
 
 const perguntas = [
   {
+    pergunta: "Qual a diferença entre um site e uma landing page?",
+    resposta:
+      "O site tem várias páginas (início, sobre, soluções, contato) e funciona como o endereço fixo do seu negócio na internet, para quem quer conhecer você por inteiro. A landing page é uma página única, com um objetivo só: levar quem chegou ali a tomar uma ação, como pedir um orçamento ou comprar. Ela costuma ser o destino de um anúncio ou de um post, quando a pessoa já foi atraída e só precisa decidir. Na prática, muita gente usa os dois: o site institucional sempre no ar e uma landing page para cada campanha.",
+  },
+  {
     pergunta: "Quanto tempo leva para o site ficar pronto?",
     resposta:
       "Landing pages costumam ficar prontas em 1 a 2 semanas. Sistemas e portais mais completos variam de 3 a 8 semanas, dependendo do escopo definido no briefing.",

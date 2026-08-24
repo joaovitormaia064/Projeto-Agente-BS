@@ -1,12 +1,31 @@
 import { SectionLabel } from "./SectionLabel";
 import { Reveal, StaggerGroup, StaggerItem } from "./Reveal";
 
+/**
+ * Os nomes sozinhos não dizem muita coisa para quem não é da área, então cada
+ * um vem com uma linha em português claro explicando para que serve.
+ */
 const categorias = [
-  "Landing Pages",
-  "Sistemas Web",
-  "Dashboards",
-  "Automações",
-  "Portais",
+  {
+    nome: "Landing Pages",
+    explica: "Uma página só, feita para convencer o visitante e gerar contato.",
+  },
+  {
+    nome: "Sistemas Web",
+    explica: "Um programa que roda no navegador, sem precisar instalar nada.",
+  },
+  {
+    nome: "Dashboards",
+    explica: "Painéis que mostram os números do seu negócio em tempo real.",
+  },
+  {
+    nome: "Automações",
+    explica: "Tarefas repetitivas que passam a acontecer sozinhas.",
+  },
+  {
+    nome: "Portais",
+    explica: "Área com login, onde cada cliente vê apenas o que é dele.",
+  },
 ];
 
 const blocos = [
@@ -43,16 +62,18 @@ export function Diferenciais() {
           </h2>
         </Reveal>
 
-        <Reveal delay={0.1} className="mt-10 flex flex-wrap gap-3">
-          {categorias.map((cat) => (
-            <span
-              key={cat}
-              className="rounded-full border border-border bg-surface px-4 py-2 text-sm font-medium text-fg-muted"
-            >
-              {cat}
-            </span>
+        <StaggerGroup className="mt-12 grid grid-cols-1 gap-x-8 gap-y-7 sm:grid-cols-2 lg:grid-cols-5">
+          {categorias.map(({ nome, explica }) => (
+            <StaggerItem key={nome}>
+              <div className="group border-l border-border pl-4 transition-colors duration-300 hover:border-accent">
+                <h3 className="font-display text-sm font-semibold transition-colors duration-300 group-hover:text-accent">
+                  {nome}
+                </h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-fg-muted">{explica}</p>
+              </div>
+            </StaggerItem>
           ))}
-        </Reveal>
+        </StaggerGroup>
 
         <StaggerGroup className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {blocos.map((bloco) => (
