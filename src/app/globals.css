@@ -51,6 +51,24 @@ body {
     radial-gradient(40% 40% at 85% 15%, rgba(124, 224, 255, 0.08) 0%, rgba(124, 224, 255, 0) 60%);
 }
 
+/* Pontinhos de "digitando..." no chat */
+@keyframes chat-dot {
+  0%,
+  60%,
+  100% {
+    opacity: 0.25;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+
+.animate-chat-dot {
+  animation: chat-dot 1.2s ease-in-out infinite;
+}
+
 /* Convite de scroll: um traço que desce pela linha do hero */
 @keyframes scroll-cue {
   0% {

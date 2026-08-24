@@ -8,7 +8,7 @@ import { Portfolio } from "@/components/Portfolio";
 import { CTAFinal } from "@/components/CTAFinal";
 import { FAQ } from "@/components/FAQ";
 import { Footer } from "@/components/Footer";
-import { WhatsAppFloatingButton } from "@/components/WhatsAppButton";
+import { ChatWidget } from "@/components/ChatWidget";
 import { ScrollProgress } from "@/components/ScrollProgress";
 
 export default function Home() {
@@ -27,7 +27,7 @@ export default function Home() {
         <FAQ />
       </main>
       <Footer />
-      <WhatsAppFloatingButton />
+      <ChatWidget />
     </>
   );
 }
