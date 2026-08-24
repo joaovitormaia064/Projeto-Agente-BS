@@ -1,12 +1,13 @@
 import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "./Reveal";
+import { ContatoRapido } from "./ContatoRapido";
 import { whatsappLink } from "@/data/site";
 
 export function CTAFinal() {
   return (
     <section className="px-6 py-24 md:py-32">
       <Reveal className="mx-auto max-w-6xl">
-        <div className="relative overflow-hidden rounded-3xl bg-accent px-8 py-16 text-center text-accent-fg sm:px-16 md:py-24">
+        <div className="relative overflow-hidden rounded-3xl bg-accent px-8 py-14 text-center text-accent-fg sm:px-16 md:py-20">
           <div
             className="pointer-events-none absolute inset-0 opacity-40"
             style={{
@@ -30,6 +31,8 @@ export function CTAFinal() {
             Falar no WhatsApp agora
             <ArrowUpRight className="h-5 w-5" strokeWidth={2.5} />
           </a>
+
+          <ContatoRapido />
         </div>
       </Reveal>
     </section>
