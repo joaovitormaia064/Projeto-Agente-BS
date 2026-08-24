@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cafeteria Âncora — Um porto seguro para quem ama café</title>
+<meta name="description" content="Cafeteria Âncora: um lugar para sentar, tomar um bom café preparado com cuidado e ficar um pouco. Conheça o cardápio, o espaço e venha nos visitar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  @view-transition{ navigation: auto; }
+  :root{
+    --navy:#132330;
+    --navy-2:#1c3242;
+    --navy-3:#0d1a24;
+    --cream:#f6f1e5;
+    --cream-2:#eee3cd;
+    --ink:#1c1712;
+    --brass:#b8834a;
+    --brass-dark:#8a5f2f;
+    --line: rgba(28,23,18,0.14);
+    --line-lt: rgba(246,241,229,0.24);
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{ margin:0; background:var(--cream); color:var(--ink); font-family:'Manrope',system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,.serif{ font-family:'Instrument Serif', Georgia, serif; font-weight:400; margin:0; }
+  p{ margin:0; }
+  a{ color:var(--brass-dark); text-decoration:none; }
+  a:hover{ color:var(--ink); }
+  .container{ max-width:1180px; margin:0 auto; padding:0 40px; }
+  .eyebrow{ font-size:12px; letter-spacing:0.14em; text-transform:uppercase; font-weight:700; color:var(--brass-dark); }
+  .btn{ display:inline-flex; align-items:center; gap:8px; padding:13px 26px; border-radius:2px; font-size:13px; letter-spacing:0.06em; text-transform:uppercase; font-weight:700; cursor:pointer; border:1px solid var(--navy); white-space:nowrap; transition:background-color .15s ease, color .15s ease, transform .15s ease, box-shadow .15s ease; }
+  .btn:hover{ transform:translateY(-1px); box-shadow:0 4px 14px rgba(19,35,48,0.18); }
+  .btn:active{ transform:translateY(0); box-shadow:none; }
+  .btn-dark{ background:var(--navy); color:var(--cream); }
+  .btn-dark:hover{ background:var(--ink); color:var(--cream); }
+  .btn-outline{ background:transparent; color:var(--navy); border:1px solid var(--navy); }
+  .btn-outline:hover{ background:var(--navy); color:var(--cream); }
+  .btn-outline-light{ background:transparent; color:var(--cream); border:1px solid var(--line-lt); }
+  .btn-outline-light:hover{ background:var(--cream); color:var(--navy); }
+  .card-link{ display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; letter-spacing:0.03em; margin-top:10px; }
+  .card-link svg{ transition:transform .15s ease; }
+  .card-link:hover svg{ transform:translateX(3px); }
+  article a.card-block{ display:block; color:inherit; }
+  article a.card-block:hover .card-title{ color:var(--brass-dark); }
+  section{ position:relative; }
+  button{ font-family:inherit; }
+
+  /* Media placeholder: sized exactly as in the design canvas. Empty ones keep the hatch pattern; filled ones show the photo. */
+  .media-slot{
+    background-image: repeating-linear-gradient(45deg, rgba(19,35,48,0.06) 0 1px, transparent 1px 14px);
+    background-color: var(--cream-2);
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .media-slot.dark{
+    background-image: repeating-linear-gradient(45deg, rgba(246,241,229,0.08) 0 1px, transparent 1px 14px);
+    background-color: var(--navy);
+    border-color: var(--line-lt);
+  }
+  .media-slot img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* NAV */
+  .nav-links{ display:flex; align-items:center; gap:34px; font-size:13px; letter-spacing:0.05em; text-transform:uppercase; font-weight:600; }
+  .nav-toggle{ display:none; background:none; border:none; cursor:pointer; padding:6px; }
+  .nav-toggle svg{ display:block; }
+
+  /* HERO */
+  .hero{ display:grid; grid-template-columns:1fr 1fr; min-height:560px; }
+  .hero .media-slot{ min-height:320px; }
+  .hero-overlay{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; text-align:center; pointer-events:none; }
+  .hero-overlay::before{ content:""; position:absolute; inset:0; background:radial-gradient(ellipse 70% 65% at center, rgba(9,17,23,0.62), rgba(9,17,23,0.18) 60%, rgba(9,17,23,0) 78%); }
+  .hero-overlay-inner{ position:relative; max-width:760px; padding:0 24px; }
+  .hero-kicker{ letter-spacing:0.22em; text-transform:uppercase; font-size:12px; font-weight:700; color:var(--cream); margin-bottom:14px; text-shadow:0 1px 12px rgba(0,0,0,0.5); }
+  .hero-title{ font-size:clamp(38px,6vw,68px); font-style:italic; line-height:1.05; color:var(--cream); text-shadow:0 2px 24px rgba(0,0,0,0.55); }
+
+  /* ABOUT */
+  .about{ padding:120px 0 100px; }
+  .about .container{ display:grid; grid-template-columns:0.85fr 1fr; gap:80px; align-items:center; }
+  .about-media{ aspect-ratio:4/5; border-radius:2px; position:relative; overflow:hidden; }
+  .about-copy h2{ font-size:clamp(28px,3vw,38px); font-style:italic; margin-bottom:26px; line-height:1.2; }
+  .about-copy p{ font-size:16px; line-height:1.75; color:rgba(28,23,18,0.82); margin-bottom:20px; }
+  .about-copy p:last-child{ margin-bottom:0; }
+
+  /* EXPLORE */
+  .explore{ padding:20px 0 110px; }
+  .explore-grid{ display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:36px; }
+  .explore-media{ aspect-ratio:4/5; border-radius:2px; margin-bottom:18px; }
+  .card-title{ font-size:20px; font-style:italic; margin-bottom:8px; }
+  .card-desc{ font-size:14px; line-height:1.6; color:rgba(28,23,18,0.72); }
+
+  /* VISIT */
+  .visit{ padding:20px 0 100px; text-align:center; }
+  .visit .container{ max-width:640px; }
+  .visit-title{ font-size:clamp(24px,3vw,32px); font-style:italic; margin-bottom:26px; }
+  .visit-rule{ height:1px; background:var(--line); margin-bottom:34px; }
+  .visit-list{ display:grid; grid-template-columns:1fr 1fr; gap:16px 40px; text-align:left; font-size:15px; }
+  .visit-item{ display:flex; align-items:center; gap:12px; }
+
+  /* JOURNAL */
+  .journal{ padding:20px 0 110px; border-top:1px solid var(--line); }
+  .journal-label{ font-size:13px; letter-spacing:0.06em; text-transform:uppercase; font-weight:700; margin:44px 0 30px; }
+  .journal-grid{ display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:28px; }
+  .journal-media{ aspect-ratio:3/4; border-radius:2px; margin-bottom:14px; }
+  .journal-title{ font-size:17px; font-style:italic; margin-bottom:6px; }
+  .journal-desc{ font-size:13px; line-height:1.6; color:rgba(28,23,18,0.7); }
+
+  /* FOOTER */
+  footer{ background:var(--navy-3); color:var(--cream); padding:70px 0 30px; }
+  .footer-grid{ display:grid; grid-template-columns:1.3fr 1fr 1fr 1.2fr; gap:40px; padding-bottom:50px; border-bottom:1px solid var(--line-lt); }
+  .footer-col-title{ font-size:12px; letter-spacing:0.08em; text-transform:uppercase; font-weight:700; margin-bottom:16px; color:rgba(246,241,229,0.9); }
+  .footer-links{ display:flex; flex-direction:column; gap:10px; font-size:13px; color:rgba(246,241,229,0.72); }
+  .footer-links a{ color:inherit; }
+  .quick-contact-form{ display:flex; flex-direction:column; gap:10px; }
+  .quick-contact-form textarea{ background:transparent; border:1px solid var(--line-lt); color:var(--cream); font-size:13px; font-family:inherit; padding:10px 12px; resize:vertical; outline:none; border-radius:2px; }
+  .quick-contact-form textarea::placeholder{ color:rgba(246,241,229,0.45); }
+  .quick-contact-actions{ display:flex; gap:8px; }
+  .quick-contact-actions .btn{ flex:1; padding:10px 10px; font-size:11px; gap:6px; }
+
+  /* CONTACT DROPDOWN */
+  .contact-menu{ position:relative; }
+  .contact-panel{ position:absolute; top:calc(100% + 10px); right:0; background:var(--cream); border:1px solid var(--line); border-radius:3px; box-shadow:0 16px 34px rgba(19,35,48,0.18); min-width:200px; padding:6px; opacity:0; transform:translateY(-6px) scale(.98); pointer-events:none; transition:opacity .18s ease, transform .18s ease; z-index:30; }
+  .contact-panel.open{ opacity:1; transform:translateY(0) scale(1); pointer-events:auto; }
+  .contact-panel-item{ display:flex; align-items:center; gap:10px; padding:10px 12px; font-size:13px; font-weight:600; color:var(--ink); border-radius:2px; }
+  .contact-panel-item:hover{ background:var(--cream-2); color:var(--ink); }
+  .contact-panel-item svg{ flex:0 0 auto; color:var(--brass-dark); }
+  .footer-bottom{ display:flex; align-items:center; justify-content:space-between; padding-top:26px; font-size:12px; color:rgba(246,241,229,0.55); flex-wrap:wrap; gap:14px; }
+  .footer-social{ display:flex; gap:20px; }
+  .footer-social a{ color:rgba(246,241,229,0.55); }
+
+  /* RESPONSIVE — mobile is an adaptation of the same single page, not a second page */
+  @media (max-width:860px){
+    .container{ padding:0 22px; }
+    .nav-links{ position:absolute; top:100%; left:0; right:0; background:var(--cream); border-bottom:1px solid var(--line); flex-direction:column; align-items:flex-start; gap:0; padding:8px 22px 16px; display:none; }
+    .nav-links.open{ display:flex; }
+    .nav-links a{ padding:10px 0; width:100%; }
+    .nav-toggle{ display:flex; }
+    .nav-reserve{ display:none; }
+    .hero{ grid-template-columns:1fr; min-height:auto; }
+    .hero .media-slot{ min-height:220px; }
+    .hero-overlay{ position:static; padding:36px 0; background:var(--navy-3); }
+    .hero-title{ text-shadow:none; }
+    .hero-kicker{ text-shadow:none; }
+    .about .container{ grid-template-columns:1fr; gap:36px; }
+    .about-media{ aspect-ratio:16/10; }
+    .explore-grid{ grid-template-columns:1fr; gap:40px; }
+    .visit-list{ grid-template-columns:1fr; }
+    .journal-grid{ grid-template-columns:1fr 1fr; gap:24px 20px; }
+    .footer-grid{ grid-template-columns:1fr 1fr; gap:32px 24px; }
+  }
+  @media (max-width:480px){
+    .journal-grid{ grid-template-columns:1fr; }
+    .footer-grid{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ANNOUNCEMENT BAR -->
+<div style="background:var(--brass); color:var(--navy-3); text-align:center; padding:8px 16px; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; font-weight:700;">
+  Aberto todos os dias · 7h às 19h · Rua Pernambuco, S/N – Savassi, Belo Horizonte – MG
+</div>
+
+<!-- NAV -->
+<nav style="background:var(--cream); border-bottom:1px solid var(--line); position:relative;">
+  <div class="container" style="display:flex; align-items:center; justify-content:space-between; height:78px; gap:24px;">
+    <div style="display:flex; align-items:center; gap:10px;">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="6" r="2.2"/>
+        <path d="M12 8.2V19"/>
+        <path d="M6 13c0 4 2.7 6.5 6 6.5s6-2.5 6-6.5"/>
+        <path d="M4 13h4M16 13h4"/>
+      </svg>
+      <span class="serif" style="font-size:24px; font-style:italic; letter-spacing:0.02em;">Âncora</span>
+    </div>
+    <div class="nav-links" id="navLinks">
+      <a href="#sobre">Sobre</a>
+      <a href="#experiencia">Experiência</a>
+      <a href="cardapio.html">Cardápio</a>
+      <a href="#visite">Visite-nos</a>
+      <a href="#diario">Diário</a>
+    </div>
+    <div class="contact-menu nav-reserve">
+      <button type="button" class="btn btn-outline" id="contactToggle" aria-haspopup="true" aria-expanded="false" aria-controls="contactPanel" style="padding:10px 20px;">Fale conosco</button>
+      <div class="contact-panel" id="contactPanel" role="menu">
+        <a class="contact-panel-item" role="menuitem" href="https://wa.me/5531999999999?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20%C3%82ncora!" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1.3-4.4A8 8 0 1 1 8.6 19L4 20Z"/><path d="M9 10c0 2.8 2.2 5 5 5"/></svg>
+          WhatsApp
+        </a>
+        <a class="contact-panel-item" role="menuitem" href="mailto:contato@cafeteriaancora.com.br?subject=Contato%20pelo%20site%20da%20%C3%82ncora">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M4 6.5l8 6 8-6"/></svg>
+          E-mail
+        </a>
+      </div>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+</nav>
+
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="media-slot dark" data-media="hero-left" data-w="590" data-h="320">
+      <img src="images/hero-interior.jpg" alt="Salão da Cafeteria Âncora com clientes nas mesas e balcão ao fundo">
+    </div>
+    <div class="media-slot" data-media="hero-right" data-w="590" data-h="320">
+      <img src="images/hero-mood.jpg" alt="Fatia de bolo de chocolate e café com latte art sobre mesa da Âncora">
+    </div>
+    <div class="hero-overlay">
+      <div class="hero-overlay-inner">
+        <div class="hero-kicker">Café Âncora</div>
+        <h1 class="hero-title">Um porto seguro<br>para quem ama café</h1>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="sobre">
+    <div class="container">
+      <div class="about-media media-slot dark" data-media="about-devagar" data-w="480" data-h="600">
+        <img src="images/about-devagar.jpg" alt="Fatia de bolo de chocolate e café com latte art sobre mesa de madeira com a frase Devagar é parte do sabor">
+      </div>
+      <div class="about-copy">
+        <div class="eyebrow" style="margin-bottom:14px;">Sobre a Âncora</div>
+        <h2>Um lugar para ancorar o seu dia</h2>
+        <p>A Âncora nasceu da vontade de criar uma pausa de verdade em meio à rotina: um espaço acolhedor para sentar, conversar e tomar um bom café, preparado com o mesmo cuidado de um ritual. Selecionamos cafés especiais e cuidamos de cada etapa do preparo — da moagem ao balcão — para que sua xícara chegue no ponto certo.</p>
+        <p>Cada bebida é preparada à vista, por uma equipe que gosta tanto do processo quanto do resultado. Aqui, devagar é parte do sabor.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPLORE GRID -->
+  <section class="explore" id="experiencia">
+    <div class="container">
+      <div class="eyebrow" style="text-align:center; margin-bottom:44px;">Explore a Âncora</div>
+      <div class="explore-grid">
+
+        <article>
+          <a class="card-block" href="cardapio.html">
+            <div class="explore-media media-slot" data-media="explore-cardapio" data-w="360" data-h="450">
+              <img src="images/blends.jpg" alt="Sacas de café Âncora e xícara com latte art sobre o balcão">
+            </div>
+            <div class="eyebrow" style="margin-bottom:6px;">Cardápio</div>
+            <h3 class="serif card-title">Nosso Café</h3>
+            <p class="card-desc">Espressos, filtros e receitas autorais, preparados na hora com cafés especiais que selecionamos a dedo.</p>
+            <span class="card-link" style="color:var(--brass-dark);">Ver cardápio completo
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </span>
+          </a>
+        </article>
+
+        <article>
+          <div class="explore-media media-slot dark" data-media="explore-caderno" data-w="360" data-h="450">
+            <img src="images/caderno.jpg" alt="Caderno de receitas aberto ao lado de um café com latte art">
+          </div>
+          <div class="eyebrow" style="margin-bottom:6px;">Caderno</div>
+          <h3 class="serif card-title">Caderno Âncora</h3>
+          <p class="card-desc">Um guia de rituais e receitas de café para todas as manhãs, escrito por quem trabalha aqui todo dia.</p>
+        </article>
+
+        <article>
+          <div class="explore-media media-slot" data-media="explore-produtos" data-w="360" data-h="450">
+            <img src="images/produtos.jpg" alt="Croissant e café com latte art no balcão da Âncora, com barista preparando bebidas ao fundo">
+          </div>
+          <div class="eyebrow" style="margin-bottom:6px;">Produtos</div>
+          <h3 class="serif card-title">Leve um pouco da Âncora</h3>
+          <p class="card-desc">Canecas e itens da casa para recriar esse momento onde você estiver.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- VISIT -->
+  <section class="visit" id="visite">
+    <div class="container">
+      <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto 30px;">
+        <circle cx="12" cy="6" r="2.2"/>
+        <path d="M12 8.2V19"/>
+        <path d="M6 13c0 4 2.7 6.5 6 6.5s6-2.5 6-6.5"/>
+        <path d="M4 13h4M16 13h4"/>
+      </svg>
+      <h2 class="serif visit-title">Visite a Âncora</h2>
+      <div class="visit-rule"></div>
+
+      <div class="visit-list">
+        <div class="visit-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brass-dark)" stroke-width="1.8"><path d="M12 21s7-7.2 7-12a7 7 0 1 0-14 0c0 4.8 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg>
+          <span>Rua Pernambuco, S/N – Savassi, Belo Horizonte – MG</span>
+        </div>
+        <div class="visit-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brass-dark)" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+          <span>Todos os dias, 7h às 19h</span>
+        </div>
+        <div class="visit-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brass-dark)" stroke-width="1.8"><path d="M5 12.5C5 8 8 5 12 5s7 3 7 7.5c0 1-.4 1.7-1.2 2.1l-1.3.7v2.2a1.5 1.5 0 0 1-1.5 1.5h-2v-2h-2v2H9a1.5 1.5 0 0 1-1.5-1.5v-2.2l-1.3-.7C5.4 14.2 5 13.5 5 12.5Z"/></svg>
+          <span>Wi-Fi gratuito</span>
+        </div>
+        <div class="visit-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brass-dark)" stroke-width="1.8"><circle cx="9" cy="8" r="1.6"/><circle cx="15" cy="8" r="1.6"/><circle cx="6" cy="12" r="1.4"/><circle cx="18" cy="12" r="1.4"/><path d="M12 12c-3 0-5 2.3-5 5.2 0 1 .8 1.8 1.8 1.6.8-.2 1.9-1 3.2-1s2.4.8 3.2 1c1 .2 1.8-.6 1.8-1.6 0-2.9-2-5.2-5-5.2Z"/></svg>
+          <span>Pet friendly</span>
+        </div>
+        <div class="visit-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brass-dark)" stroke-width="1.8"><path d="M12 2v20M6 8h12M6 8l-2 6h16l-2-6"/></svg>
+          <span>Área externa</span>
+        </div>
+        <div class="visit-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brass-dark)" stroke-width="1.8"><path d="M4 5h4l2 5-2.5 1.5a11 11 0 0 0 5 5L14 14l5 2v4a2 2 0 0 1-2 2C9.6 22 2 14.4 2 7a2 2 0 0 1 2-2Z"/></svg>
+          <a href="https://wa.me/5531999999999?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20%C3%82ncora!" target="_blank" rel="noopener" style="font-weight:600;">(31) 99999-9999 · WhatsApp</a>
+        </div>
+      </div>
+
+      <div style="margin-top:42px; display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+        <a href="cardapio.html" class="btn btn-dark">Ver cardápio completo</a>
+        <a href="mailto:contato@cafeteriaancora.com.br?subject=Contato%20pelo%20site%20da%20%C3%82ncora" class="btn btn-outline">Enviar e-mail</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOURNAL -->
+  <section class="journal" id="diario">
+    <div class="container">
+      <div class="journal-label">Diário Âncora</div>
+      <div class="journal-grid">
+
+        <article>
+          <div class="journal-media media-slot" data-media="journal-1" data-w="270" data-h="360">
+            <img src="images/journal-balcao.jpg" alt="Balcão da Âncora com pastéis e doces frescos em exposição">
+          </div>
+          <h3 class="serif journal-title">O que sai fresco toda manhã</h3>
+          <p class="journal-desc">Uma volta pelo balcão: os salgados e doces que preparamos todo dia na Âncora.</p>
+        </article>
+
+        <article>
+          <div class="journal-media media-slot dark" data-media="journal-2" data-w="270" data-h="360">
+            <img src="images/journal-pausa.jpg" alt="Fatia de bolo e cappuccino servidos numa mesa aconchegante da Âncora">
+          </div>
+          <h3 class="serif journal-title">Uma pausa com calma</h3>
+          <p class="journal-desc">Por que vale a pena sentar, respirar e ficar um pouco mais na Âncora.</p>
+        </article>
+
+        <article>
+          <div class="journal-media media-slot" data-media="journal-3" data-w="270" data-h="360">
+            <img src="images/cold-brew.jpg" alt="Cold brew de laranja e fatia de bolo sobre mesa de madeira">
+          </div>
+          <h3 class="serif journal-title">Receita: Cold Brew de Laranja</h3>
+          <p class="journal-desc">Uma versão refrescante do nosso cold brew de assinatura.</p>
+        </article>
+
+        <article>
+          <div class="journal-media media-slot dark" data-media="journal-4" data-w="270" data-h="360">
+            <img src="images/journal-boasvindas.jpg" alt="Cesta de pão de queijo e café expresso, com a fachada Cafeteria Âncora ao fundo">
+          </div>
+          <h3 class="serif journal-title">Boas-vindas à Âncora</h3>
+          <p class="journal-desc">Um pouco da história de quem construiu esse cantinho para você.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--cream)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="6" r="2.2"/><path d="M12 8.2V19"/><path d="M6 13c0 4 2.7 6.5 6 6.5s6-2.5 6-6.5"/><path d="M4 13h4M16 13h4"/>
+          </svg>
+          <span class="serif" style="font-size:20px; font-style:italic;">Âncora</span>
+        </div>
+        <p style="font-size:13px; line-height:1.7; color:rgba(246,241,229,0.68); max-width:260px;">Café preparado com cuidado, servido com tempo. Um refúgio no centro da cidade.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Atendimento</div>
+        <div class="footer-links">
+          <a href="cardapio.html">Cardápio</a>
+          <a href="#visite">Reservas</a>
+          <a href="#">Perguntas frequentes</a>
+          <a href="#">Trabalhe conosco</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Visite-nos</div>
+        <div class="footer-links">
+          <span>Rua Pernambuco, S/N – Savassi, Belo Horizonte – MG</span>
+          <span>Todos os dias, 7h às 19h</span>
+          <a href="https://wa.me/5531999999999?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20%C3%82ncora!" target="_blank" rel="noopener">(31) 99999-9999 · WhatsApp</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Mensagem rápida</div>
+        <p style="font-size:13px; color:rgba(246,241,229,0.72); margin-bottom:14px;">Escreva sua mensagem e escolha por onde quer enviar.</p>
+        <form class="quick-contact-form" id="quickContactForm">
+          <textarea id="quickContactMessage" rows="3" placeholder="Sua mensagem"></textarea>
+          <div class="quick-contact-actions">
+            <button type="button" class="btn btn-outline-light" data-channel="whatsapp">WhatsApp</button>
+            <button type="button" class="btn btn-outline-light" data-channel="email">E-mail</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Cafeteria Âncora. Todos os direitos reservados.</span>
+      <div class="footer-social">
+        <a href="#">Instagram</a>
+        <a href="#">Facebook</a>
+        <a href="#">Política de privacidade</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  var navToggle = document.getElementById('navToggle');
+  var navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', function () {
+    var isOpen = navLinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  navLinks.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', function () {
+      navLinks.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  var contactToggle = document.getElementById('contactToggle');
+  var contactPanel = document.getElementById('contactPanel');
+  if (contactToggle && contactPanel) {
+    contactToggle.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var isOpen = contactPanel.classList.toggle('open');
+      contactToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+    document.addEventListener('click', function (e) {
+      if (!contactPanel.contains(e.target) && e.target !== contactToggle) {
+        contactPanel.classList.remove('open');
+        contactToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        contactPanel.classList.remove('open');
+        contactToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  var quickForm = document.getElementById('quickContactForm');
+  if (quickForm) {
+    var quickMessage = document.getElementById('quickContactMessage');
+    quickForm.querySelectorAll('[data-channel]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var text = quickMessage.value.trim() || 'Olá! Vim pelo site da Âncora.';
+        if (btn.dataset.channel === 'whatsapp') {
+          window.open('https://wa.me/5531999999999?text=' + encodeURIComponent(text), '_blank', 'noopener');
+        } else {
+          window.location.href = 'mailto:contato@cafeteriaancora.com.br?subject=' + encodeURIComponent('Mensagem pelo site da Âncora') + '&body=' + encodeURIComponent(text);
+        }
+      });
+    });
+  }
+</script>
+
+</body>
+</html>
