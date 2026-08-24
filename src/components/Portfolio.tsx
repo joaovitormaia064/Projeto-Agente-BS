@@ -58,10 +58,6 @@ function ProjectCard({ projeto, indice, ativo, algumAtivo, onOpen, onEnter, onLe
       />
       <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/70 to-bg/30 transition-all duration-500 group-hover:via-bg/35 group-hover:to-transparent" />
 
-      <span className="absolute left-4 top-4 rounded-md bg-accent px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-accent-fg">
-        {projeto.rotulo}
-      </span>
-
       <div
         aria-hidden
         style={{ transform: `translate(${ring.x}px, ${ring.y}px) translate(-50%, -50%)` }}
@@ -74,7 +70,7 @@ function ProjectCard({ projeto, indice, ativo, algumAtivo, onOpen, onEnter, onLe
         <h3 className="font-display text-2xl font-semibold leading-[1.15] tracking-tight text-fg transition-transform duration-500 group-hover:-translate-y-1">
           {projeto.nome}
         </h3>
-        <p className="mt-1.5 text-xs text-fg-muted">{projeto.tecnologias.join(" · ")}</p>
+        <p className="mt-1.5 text-xs text-fg-muted">{projeto.rotulo}</p>
 
         <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-fg">
           <span className="flex h-7 w-7 items-center justify-center rounded-full border border-fg/70 transition-colors duration-300 group-hover:border-accent group-hover:bg-accent group-hover:text-accent-fg">
