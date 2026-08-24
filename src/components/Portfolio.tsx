@@ -53,7 +53,7 @@ function ProjectCard({ projeto, indice, ativo, algumAtivo, onOpen, onEnter, onLe
       }`}
     >
       <div
-        style={{ backgroundImage: `url(${projeto.imagemLonga})` }}
+        style={{ backgroundImage: `url(${projeto.imagem})` }}
         className="absolute inset-0 origin-top bg-[length:100%_auto] bg-top transition-[background-position] duration-[9000ms] ease-linear group-hover:bg-bottom"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/70 to-bg/30 transition-all duration-500 group-hover:via-bg/35 group-hover:to-transparent" />
@@ -99,8 +99,10 @@ function PreviewModal({ projeto, onClose }: { projeto: Project; onClose: () => v
       className="fixed inset-0 z-50 flex items-center justify-center bg-bg/90 p-4 backdrop-blur-sm sm:p-8"
       onClick={onClose}
     >
+      {/* No celular o quadro fica estreito e alto, então o site embutido responde
+          com o próprio layout mobile; no desktop volta a ser paisagem. */}
       <div
-        className="relative flex aspect-video w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-border bg-bg-alt shadow-2xl"
+        className="relative flex h-[78vh] w-full max-w-sm flex-col overflow-hidden rounded-2xl border border-border bg-bg-alt shadow-2xl sm:aspect-video sm:h-auto sm:max-w-4xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex h-10 flex-shrink-0 items-center justify-between border-b border-border bg-surface px-4">

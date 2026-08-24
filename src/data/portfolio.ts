@@ -9,10 +9,8 @@ export type Project = {
   categoria: ProjectCategory;
   /** Rótulo curto exibido no card (ex: "Landing Page", "Sistema Web") */
   rotulo: string;
-  /** Caminho da imagem curta (thumbnail padrão) em /public */
+  /** Captura alta do site em /public, usada no card e no efeito de scroll ao passar o mouse */
   imagem: string;
-  /** Caminho de uma captura mais alta em /public, usada no efeito de scroll ao passar o mouse */
-  imagemLonga: string;
   /** Caminho do site real em /public, aberto ao vivo dentro de um iframe ao clicar no card */
   preview: string;
   descricao: string;
@@ -25,8 +23,7 @@ export const PROJECTS: Project[] = [
     nome: "ASC Action",
     categoria: "Landing Pages",
     rotulo: "Landing Page",
-    imagem: "/portfolio/asc-action.jpg",
-    imagemLonga: "/portfolio/asc-action-full.jpg",
+    imagem: "/portfolio/asc-action-full.jpg",
     preview: "/portfolio-sites/asc-action.html",
     descricao: "Página de vendas para tênis de performance, com foco em conversão direta.",
     tecnologias: ["HTML", "CSS", "JavaScript"],
@@ -35,8 +32,7 @@ export const PROJECTS: Project[] = [
     nome: "Cafeteria Âncora",
     categoria: "Institucional",
     rotulo: "Site Institucional",
-    imagem: "/portfolio/cafeteria-ancora.jpg",
-    imagemLonga: "/portfolio/cafeteria-ancora-full.jpg",
+    imagem: "/portfolio/cafeteria-ancora-full.jpg",
     preview: "/portfolio-sites/cafeteria-ancora.html",
     descricao: "Site de apresentação e cardápio para uma cafeteria de bairro.",
     tecnologias: ["HTML", "CSS", "JavaScript"],
