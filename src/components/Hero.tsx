@@ -4,6 +4,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion
 import { useRef } from "react";
 import { ArrowUpRight, Gauge, Code2, TrendingUp } from "lucide-react";
 import { whatsappLink } from "@/data/site";
+import { Gear } from "./Gear";
 
 const badges = [
   { label: "Performance", icon: Gauge },
@@ -21,6 +22,10 @@ export function Hero() {
   const dotfieldY = useTransform(scrollYProgress, [0, 1], [0, 120]);
   const glowY = useTransform(scrollYProgress, [0, 1], [0, 70]);
 
+  const { scrollYProgress: pageProgress } = useScroll();
+  const gearRotate1 = useTransform(pageProgress, [0, 1], [0, 220]);
+  const gearRotate2 = useTransform(pageProgress, [0, 1], [0, -160]);
+
   return (
     <section
       id="top"
@@ -35,6 +40,19 @@ export function Hero() {
         style={reduceMotion ? undefined : { y: glowY }}
         className="pointer-events-none absolute inset-0 bg-hero-glow"
       />
+
+      {!reduceMotion && (
+        <>
+          <Gear
+            rotate={gearRotate1}
+            className="pointer-events-none absolute -right-16 -top-16 h-72 w-72 text-accent/10 sm:h-96 sm:w-96"
+          />
+          <Gear
+            rotate={gearRotate2}
+            className="pointer-events-none absolute -bottom-20 -left-16 h-56 w-56 text-fg/5 sm:h-72 sm:w-72"
+          />
+        </>
+      )}
 
       <div className="relative mx-auto flex max-w-5xl flex-col items-center px-6 text-center">
         <motion.span
