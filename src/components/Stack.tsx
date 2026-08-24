@@ -24,12 +24,16 @@ const PECAS: {
   duracao: number;
   atraso: number;
 }[] = [
-  { nome: "React", lados: [0, 1, -1, 0], desloca: 6, sobe: 9, gira: [-3, -1], duracao: 6.5, atraso: 0 },
-  { nome: "Next.js", lados: [-1, 0, 1, 1], desloca: -10, sobe: 7, gira: [2, 4], duracao: 7.8, atraso: 0.9 },
-  { nome: "TypeScript", lados: [1, -1, 0, 0], desloca: 12, sobe: 11, gira: [-1, -4], duracao: 5.9, atraso: 1.7 },
-  { nome: "Node.js", lados: [0, 1, 1, -1], desloca: -6, sobe: 8, gira: [3, 1], duracao: 8.4, atraso: 0.4 },
-  { nome: "Tailwind", lados: [-1, 0, 0, 1], desloca: 9, sobe: 10, gira: [-2, -5], duracao: 6.9, atraso: 2.3 },
-  { nome: "PostgreSQL", lados: [1, -1, -1, 0], desloca: -12, sobe: 7, gira: [4, 2], duracao: 7.3, atraso: 1.2 },
+  { nome: "HTML", lados: [0, 1, -1, 0], desloca: 6, sobe: 9, gira: [-3, -1], duracao: 6.5, atraso: 0 },
+  { nome: "CSS", lados: [-1, 0, 1, 1], desloca: -10, sobe: 7, gira: [2, 4], duracao: 7.8, atraso: 0.9 },
+  { nome: "JavaScript", lados: [1, -1, 0, 0], desloca: 12, sobe: 11, gira: [-1, -4], duracao: 5.9, atraso: 1.7 },
+  { nome: "TypeScript", lados: [0, 1, 1, -1], desloca: -6, sobe: 8, gira: [3, 1], duracao: 8.4, atraso: 0.4 },
+  { nome: "React", lados: [-1, 0, 0, 1], desloca: 9, sobe: 10, gira: [-2, -5], duracao: 6.9, atraso: 2.3 },
+  { nome: "Next.js", lados: [1, -1, -1, 0], desloca: -12, sobe: 7, gira: [4, 2], duracao: 7.3, atraso: 1.2 },
+  { nome: "Node.js", lados: [0, -1, 1, 1], desloca: 8, sobe: 8, gira: [-4, -2], duracao: 8.1, atraso: 3.1 },
+  { nome: "Tailwind", lados: [1, 1, 0, -1], desloca: -8, sobe: 11, gira: [1, 3], duracao: 6.2, atraso: 0.6 },
+  { nome: "PostgreSQL", lados: [-1, -1, 1, 0], desloca: 11, sobe: 7, gira: [-2, -4], duracao: 7.6, atraso: 2.8 },
+  { nome: "Figma", lados: [1, 0, -1, -1], desloca: -7, sobe: 9, gira: [3, 5], duracao: 8.6, atraso: 1.5 },
 ];
 
 /**
@@ -84,7 +88,7 @@ export function Stack() {
         </Reveal>
 
         <Reveal delay={0.1}>
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-x-5 gap-y-8 sm:justify-start">
+          <div className="mt-12 grid w-fit grid-cols-2 items-center gap-x-5 gap-y-8 sm:grid-cols-3 lg:grid-cols-5">
             {PECAS.map((peca) => (
               <div
                 key={peca.nome}
@@ -121,26 +125,11 @@ export function Stack() {
               </div>
             ))}
 
-            {/* A peça que falta: sugere que a estante não termina aqui. */}
-            <div style={{ width: L, height: A }} className="relative">
-              <svg
-                viewBox={`${-M} ${-M} ${L + M * 2} ${A + M * 2}`}
-                className="absolute overflow-visible"
-                style={{ left: -M, top: -M, width: L + M * 2, height: A + M * 2 }}
-                aria-hidden
-              >
-                <path
-                  d={caminhoDaPeca(0, 0, 1, -1)}
-                  className="fill-none stroke-border"
-                  strokeWidth={1.5}
-                  strokeDasharray="5 6"
-                />
-              </svg>
-              <span className="pointer-events-none absolute inset-0 flex items-center justify-center px-3 text-center font-display text-[13px] font-medium text-fg-muted/70">
-                e muito mais
-              </span>
-            </div>
           </div>
+
+          <p className="mt-8 text-xs text-fg-muted/60">
+            e outras, conforme o projeto pedir.
+          </p>
         </Reveal>
       </div>
     </section>
