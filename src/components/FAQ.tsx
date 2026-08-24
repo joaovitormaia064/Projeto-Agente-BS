@@ -43,7 +43,7 @@ export function FAQ() {
   const [aberto, setAberto] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="border-t border-border py-20 md:py-24">
+    <section id="faq" className="border-t border-border py-24 md:py-32">
       <div className="mx-auto max-w-3xl px-6">
         <Reveal className="text-center">
           <SectionLabel>Dúvidas</SectionLabel>

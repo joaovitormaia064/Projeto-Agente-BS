@@ -28,7 +28,7 @@ const etapas = [
 
 export function Processo() {
   return (
-    <section id="processo" className="border-t border-border py-20 md:py-24">
+    <section id="processo" className="border-t border-border py-24 md:py-32">
       <div className="mx-auto max-w-6xl px-6">
         <Reveal>
           <SectionLabel>Como funciona</SectionLabel>

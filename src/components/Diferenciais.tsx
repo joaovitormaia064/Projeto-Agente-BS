@@ -34,7 +34,7 @@ const blocos = [
 
 export function Diferenciais() {
   return (
-    <section className="border-t border-border py-20 md:py-24">
+    <section className="border-t border-border py-24 md:py-32">
       <div className="mx-auto max-w-6xl px-6">
         <Reveal>
           <SectionLabel>Soluções sob medida</SectionLabel>
