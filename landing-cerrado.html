@@ -37,6 +37,15 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  #bg-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: radial-gradient(ellipse at 70% 0%, #232c17 0%, #12150f 55%, #0c0e09 100%);
+  }
+
   ::selection { background: var(--accent); color: #1b1200; }
 
   a { color: var(--accent-soft); text-decoration-thickness: 1px; text-underline-offset: 3px; }
@@ -186,6 +195,14 @@
 
   .btn:hover { background: var(--accent-soft); transform: translateY(-1px); }
 
+  .btn-ghost {
+    background: transparent;
+    color: var(--accent-soft);
+    border: 1px solid var(--accent-soft);
+  }
+
+  .btn-ghost:hover { background: rgba(255, 140, 58, 0.1); color: var(--accent-soft); }
+
   .cta-note {
     font-family: var(--font-mono);
     font-size: 0.78rem;
@@ -267,42 +284,90 @@
   .tag-bad { background: rgba(193, 80, 46, 0.18); color: var(--clay-soft); border: 1px solid rgba(193,80,46,0.4); }
   .tag-good { background: rgba(255, 140, 58, 0.14); color: var(--accent-soft); border: 1px solid rgba(255,140,58,0.4); }
 
-  /* ingredient card, field-note style */
-  .fieldnote {
-    background: var(--bg-surface);
+  /* materia prima: retrato + processo */
+  .planta-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 5vw, 3.5rem);
+    align-items: start;
+  }
+
+  @media (min-width: 900px) {
+    .planta-layout { grid-template-columns: minmax(0, 21rem) 1fr; }
+  }
+
+  .specimen-frame {
+    border-radius: 6px;
+    overflow: hidden;
     border: 1px solid var(--line);
-    border-radius: 4px;
-    padding: clamp(1.5rem, 3vw, 2.25rem);
-    position: relative;
+    background: linear-gradient(155deg, #3a2c1d 0%, #241b12 60%, #1a140d 100%);
   }
 
-  .fieldnote::before {
-    content: "espécime catalogado";
-    position: absolute;
-    top: -0.6rem;
-    left: 1.5rem;
-    background: var(--bg-void);
-    padding: 0 0.6rem;
+  .specimen-frame svg { display: block; width: 100%; height: auto; }
+
+  .specimen-caption {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
     font-family: var(--font-mono);
-    font-size: 0.65rem;
+    font-size: 0.7rem;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.06em;
     color: var(--text-muted);
+    padding: 0.7rem 0.9rem;
+    border-top: 1px solid var(--line);
   }
 
-  .fieldnote h3 {
-    font-size: 1.3rem;
-    margin-bottom: 0.3rem;
-  }
-
-  .fieldnote .latin {
+  .specimen-latin {
     font-family: var(--font-body);
     font-style: italic;
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    margin-bottom: 1rem;
-    display: block;
+    text-transform: none;
+    letter-spacing: normal;
+    color: var(--ink-dim);
+    font-size: 0.98rem;
+    margin: 0.9rem 0 1.4rem;
   }
+
+  .process {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    counter-reset: stage;
+  }
+
+  @media (min-width: 620px) {
+    .process { grid-template-columns: repeat(3, 1fr); }
+    .process::before {
+      content: "";
+      position: absolute;
+      top: 1.9rem;
+      left: 8%;
+      right: 8%;
+      height: 1px;
+      background: repeating-linear-gradient(90deg, var(--line) 0 6px, transparent 6px 12px);
+      z-index: 0;
+    }
+  }
+
+  .stage { position: relative; z-index: 1; }
+
+  .stage .stage-art {
+    width: 3.8rem;
+    height: 3.8rem;
+    border-radius: 50%;
+    background: var(--bg-surface);
+    border: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  .stage .stage-art svg { width: 2.1rem; height: 2.1rem; }
+
+  .stage h3 { font-size: 1.02rem; margin-bottom: 0.35rem; }
+  .stage p { color: var(--text-muted); font-size: 0.92rem; }
 
   .specs {
     display: grid;
@@ -310,7 +375,7 @@
     gap: 0.6rem 1.5rem;
     font-family: var(--font-mono);
     font-size: 0.82rem;
-    margin-top: 1.25rem;
+    margin: 1.75rem 0 0;
     padding-top: 1.25rem;
     border-top: 1px dashed var(--line);
   }
@@ -354,39 +419,43 @@
 
   .compare .after h3 { color: var(--accent-soft); }
 
-  /* benefits grid, using catalog codes not decorative numbers */
+  /* benefits: lista assimetrica, catalog codes nao sao numeracao decorativa */
   .benefits {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1px;
-    background: var(--line);
-    border: 1px solid var(--line);
-    border-radius: 4px;
-    overflow: hidden;
-  }
-
-  @media (min-width: 720px) {
-    .benefits { grid-template-columns: 1fr 1fr; }
+    display: flex;
+    flex-direction: column;
   }
 
   .benefit {
-    background: var(--bg-surface);
-    padding: clamp(1.5rem, 3vw, 2rem);
+    display: grid;
+    grid-template-columns: 4.5rem 1fr;
+    gap: 1.5rem;
+    padding: clamp(1.4rem, 3vw, 1.85rem) 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .benefit:first-child { border-top: 1px solid var(--line); }
+
+  @media (min-width: 720px) {
+    .benefit:nth-child(even) { grid-template-columns: 1fr 4.5rem 1fr; }
+    .benefit:nth-child(even) .code { grid-column: 2; text-align: center; }
+    .benefit:nth-child(even) .benefit-body { grid-column: 3; }
+    .benefit:nth-child(even) .benefit-spacer { grid-column: 1; }
   }
 
   .benefit .code {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: 0.78rem;
     color: var(--accent);
     letter-spacing: 0.05em;
+    padding-top: 0.2rem;
   }
 
   .benefit h3 {
-    font-size: 1.15rem;
-    margin: 0.5rem 0 0.5rem;
+    font-size: 1.2rem;
+    margin: 0 0 0.4rem;
   }
 
-  .benefit p { color: var(--text-muted); font-size: 0.98rem; }
+  .benefit p { color: var(--text-muted); font-size: 0.98rem; max-width: 42ch; }
 
   /* paradox */
   .paradox {
@@ -537,6 +606,8 @@
   }
 </style>
 
+<canvas id="bg-canvas" aria-hidden="true"></canvas>
+
 <header class="top">
   <div class="wrap">
     <div class="top-row">
@@ -606,18 +677,100 @@
 
 <section id="planta">
   <div class="wrap">
-    <span class="eyebrow">Ficha da matéria prima</span>
-    <h2 style="margin-top:1rem; max-width: 22ch;">A castanha que carrega o pote inteiro</h2>
-    <div class="fieldnote fade-in" style="margin-top:2rem; max-width: 34rem;">
-      <h3>Baru torrado</h3>
-      <span class="latin">Dipteryx alata</span>
-      <p>Nasce em árvores que resistem a incêndio e seca, espalhadas pelo Cerrado de Goiás, Minas Gerais e Mato Grosso. A castanha some dentro de uma vagem dura que só quebra depois de seca ao sol. É colhida por famílias extrativistas, não plantada em monocultura.</p>
-      <dl class="specs">
-        <dt>Proteína</dt><dd>29g / 100g</dd>
-        <dt>Gordura</dt><dd>predominante insaturada</dd>
-        <dt>Origem</dt><dd>Cerrado goiano, extrativismo</dd>
-        <dt>Processo</dt><dd>torra e moagem a frio</dd>
-      </dl>
+    <span class="eyebrow">Da vagem à dose</span>
+    <h2 style="margin-top:1rem; max-width: 24ch;">A castanha que carrega o pote inteiro</h2>
+    <div class="planta-layout fade-in" style="margin-top:2.25rem;">
+      <div>
+        <div class="specimen-frame">
+          <svg viewBox="0 0 280 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Tigela de barro vista de cima, cheia de castanhas de baru torradas, sobre uma esteira de juta">
+            <defs>
+              <radialGradient id="bowlRim" cx="50%" cy="42%" r="65%">
+                <stop offset="0%" stop-color="#6b4a30"/>
+                <stop offset="70%" stop-color="#4a3320"/>
+                <stop offset="100%" stop-color="#2e2013"/>
+              </radialGradient>
+              <radialGradient id="bowlInner" cx="48%" cy="40%" r="60%">
+                <stop offset="0%" stop-color="#2a1f16"/>
+                <stop offset="100%" stop-color="#171009"/>
+              </radialGradient>
+              <linearGradient id="nutGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#7a5334"/>
+                <stop offset="55%" stop-color="#4b2f1c"/>
+                <stop offset="100%" stop-color="#2c1a10"/>
+              </linearGradient>
+            </defs>
+            <rect width="280" height="220" fill="#3a2c1d"/>
+            <g opacity="0.5" stroke="#241b12" stroke-width="1">
+              <path d="M0 20 H280 M0 45 H280 M0 70 H280 M0 95 H280 M0 120 H280 M0 145 H280 M0 170 H280 M0 195 H280"/>
+              <path d="M20 0 V220 M50 0 V220 M80 0 V220 M110 0 V220 M140 0 V220 M170 0 V220 M200 0 V220 M230 0 V220 M260 0 V220"/>
+            </g>
+            <ellipse cx="140" cy="112" rx="118" ry="88" fill="url(#bowlRim)"/>
+            <ellipse cx="140" cy="108" rx="96" ry="70" fill="url(#bowlInner)"/>
+            <g>
+              <ellipse cx="105" cy="88" rx="15" ry="9" fill="url(#nutGrad)" transform="rotate(-18 105 88)"/>
+              <ellipse cx="140" cy="80" rx="16" ry="9" fill="url(#nutGrad)" transform="rotate(8 140 80)"/>
+              <ellipse cx="175" cy="90" rx="15" ry="9" fill="url(#nutGrad)" transform="rotate(-25 175 90)"/>
+              <ellipse cx="118" cy="108" rx="16" ry="9.5" fill="url(#nutGrad)" transform="rotate(20 118 108)"/>
+              <ellipse cx="155" cy="110" rx="15" ry="9" fill="url(#nutGrad)" transform="rotate(-10 155 110)"/>
+              <ellipse cx="190" cy="115" rx="14" ry="8.5" fill="url(#nutGrad)" transform="rotate(30 190 115)"/>
+              <ellipse cx="97" cy="120" rx="14" ry="8" fill="url(#nutGrad)" transform="rotate(-5 97 120)"/>
+              <ellipse cx="130" cy="132" rx="16" ry="9" fill="url(#nutGrad)" transform="rotate(12 130 132)"/>
+              <ellipse cx="167" cy="135" rx="15" ry="8.5" fill="url(#nutGrad)" transform="rotate(-18 167 135)"/>
+              <ellipse cx="112" cy="145" rx="14" ry="8" fill="url(#nutGrad)" transform="rotate(24 112 145)"/>
+              <ellipse cx="148" cy="150" rx="15" ry="8.5" fill="url(#nutGrad)" transform="rotate(-8 148 150)"/>
+            </g>
+            <ellipse cx="140" cy="112" rx="118" ry="88" fill="none" stroke="#7a5b3a" stroke-width="2" opacity="0.4"/>
+          </svg>
+        </div>
+        <div class="specimen-caption">
+          <span>Baru torrado, recém colhido</span>
+          <span>Pirenópolis, GO</span>
+        </div>
+      </div>
+      <div>
+        <p class="specimen-latin">Dipteryx alata, a árvore que resiste a incêndio e seca, espalhada pelo Cerrado de Goiás, Minas Gerais e Mato Grosso. A castanha some dentro de uma vagem lenhosa que só solta depois de seca ao sol, colhida do chão por famílias extrativistas, nunca plantada em monocultura.</p>
+        <div class="process">
+          <div class="stage">
+            <div class="stage-art">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="20" cy="21" rx="10" ry="16" fill="#8a6a3f" stroke="#c9a877" stroke-width="1.4"/>
+                <path d="M20 5 V37" stroke="#6b4f2c" stroke-width="1" opacity="0.6"/>
+              </svg>
+            </div>
+            <h3>1. Vagem seca</h3>
+            <p>Cai da árvore inteira, com casca lenhosa que protege as castanhas por dentro.</p>
+          </div>
+          <div class="stage">
+            <div class="stage-art">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 22 C9 12 14 6 20 6 C26 6 31 12 31 22" stroke="#c9a877" stroke-width="1.4"/>
+                <ellipse cx="15" cy="24" rx="5.5" ry="7" fill="#4b2f1c"/>
+                <ellipse cx="25" cy="26" rx="5.5" ry="7" fill="#4b2f1c"/>
+              </svg>
+            </div>
+            <h3>2. Castanha exposta</h3>
+            <p>Quebrada à mão, revela as castanhas escuras que ficam guardadas lá dentro.</p>
+          </div>
+          <div class="stage">
+            <div class="stage-art">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="20" cy="20" r="13" fill="#4b2f1c"/>
+                <circle cx="15" cy="15" r="1.6" fill="#8a6a3f"/>
+                <circle cx="24" cy="24" r="1.4" fill="#8a6a3f"/>
+                <circle cx="26" cy="14" r="1.2" fill="#8a6a3f"/>
+                <circle cx="14" cy="25" r="1.2" fill="#8a6a3f"/>
+              </svg>
+            </div>
+            <h3>3. Torra e moagem</h3>
+            <p>Torrada em baixa temperatura e moída a frio, sem passar por isolamento químico.</p>
+          </div>
+        </div>
+        <dl class="specs">
+          <dt>Proteína</dt><dd>29g / 100g</dd>
+          <dt>Gordura</dt><dd>predominante insaturada</dd>
+          <dt>Origem</dt><dd>Cerrado goiano, extrativismo</dd>
+        </dl>
+      </div>
     </div>
   </div>
 </section>
@@ -643,26 +796,36 @@
   <div class="wrap">
     <span class="eyebrow">Por que fica na rotina</span>
     <h2 style="margin-top:1rem;">Quatro razões que não têm a ver com marketing</h2>
-    <div class="benefits fade-in" style="margin-top:2rem;">
+    <div class="benefits fade-in" style="margin-top:2.5rem;">
       <div class="benefit">
         <span class="code">BA 01</span>
-        <h3>Perfil completo de aminoácidos</h3>
-        <p>Baru, ervilha e arroz juntos cobrem os nove aminoácidos essenciais, a mesma exigência que se cobra do whey.</p>
+        <div class="benefit-body">
+          <h3>Perfil completo de aminoácidos</h3>
+          <p>Baru, ervilha e arroz juntos cobrem os nove aminoácidos essenciais, a mesma exigência que se cobra do whey.</p>
+        </div>
       </div>
       <div class="benefit">
+        <span class="benefit-spacer"></span>
         <span class="code">BA 02</span>
-        <h3>Leve para o intestino</h3>
-        <p>Sem lactose e sem os fermentáveis que causam estufamento em quem tem intestino sensível.</p>
+        <div class="benefit-body">
+          <h3>Leve para o intestino</h3>
+          <p>Sem lactose e sem os fermentáveis que causam estufamento em quem tem intestino sensível.</p>
+        </div>
       </div>
       <div class="benefit">
         <span class="code">BA 03</span>
-        <h3>Extrativismo, não desmatamento</h3>
-        <p>O baru é colhido de árvores nativas de pé. Cada pote sustenta famílias extrativistas do interior de Goiás.</p>
+        <div class="benefit-body">
+          <h3>Extrativismo, não desmatamento</h3>
+          <p>O baru é colhido de árvores nativas de pé. Cada pote sustenta famílias extrativistas do interior de Goiás.</p>
+        </div>
       </div>
       <div class="benefit">
+        <span class="benefit-spacer"></span>
         <span class="code">BA 04</span>
-        <h3>Três ingredientes, ponto final</h3>
-        <p>Baru, ervilha, arroz. Sem gomas, sem edulcorante artificial, sem lista que precisa de tradução.</p>
+        <div class="benefit-body">
+          <h3>Três ingredientes, ponto final</h3>
+          <p>Baru, ervilha, arroz. Sem gomas, sem edulcorante artificial, sem lista que precisa de tradução.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -670,7 +833,7 @@
 
 <section>
   <div class="wrap paradox fade-in">
-    <blockquote>Você não precisa de mais uma proteína em pó. Precisa de uma que <span>já devia estar</span> na sua despensa há anos.</blockquote>
+    <blockquote>O rótulo que você deveria desconfiar não é o do baru. É o do pote que promete <span>proteína isolada</span> e não explica de onde ela saiu.</blockquote>
   </div>
 </section>
 
@@ -733,7 +896,7 @@
     <h2 style="margin-top:1rem;">O próximo suplemento que você compra não devia ser mais um suplemento.</h2>
     <p class="col" style="margin-top:1.25rem;">Devia ser a última vez que você lê uma lista de ingredientes e não reconhece nenhum. Baru, ervilha, arroz. É essa a lista inteira.</p>
     <div class="cta-row" style="margin-top:1.75rem;">
-      <button class="btn" type="button">Quero experimentar</button>
+      <button class="btn btn-ghost" type="button">Fazer meu primeiro pedido</button>
       <span class="cta-note">Frete grátis a partir de dois potes.</span>
     </div>
   </div>
@@ -782,5 +945,81 @@
         branch.style.transform = 'translateY(' + Math.min(y, 40) + 'px)';
       }, { passive: true });
     }
+
+    var canvas = document.getElementById('bg-canvas');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var w, h, particles;
+
+    function resize() {
+      w = window.innerWidth;
+      h = window.innerHeight;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function makeParticles(n) {
+      var arr = [];
+      for (var i = 0; i < n; i++) {
+        var ember = Math.random() < 0.35;
+        arr.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: ember ? 1.2 + Math.random() * 1.8 : 0.6 + Math.random() * 1.1,
+          speed: 6 + Math.random() * 14,
+          sway: 8 + Math.random() * 18,
+          phase: Math.random() * Math.PI * 2,
+          ember: ember,
+          alpha: 0.25 + Math.random() * 0.5
+        });
+      }
+      return arr;
+    }
+
+    resize();
+    particles = makeParticles(Math.min(70, Math.floor((w * h) / 26000)));
+
+    window.addEventListener('resize', function () {
+      resize();
+      particles = makeParticles(Math.min(70, Math.floor((w * h) / 26000)));
+    });
+
+    if (reduce) {
+      ctx.clearRect(0, 0, w, h);
+      particles.forEach(function (p) {
+        ctx.beginPath();
+        ctx.fillStyle = p.ember ? 'rgba(255,140,58,' + p.alpha + ')' : 'rgba(200,210,180,' + (p.alpha * 0.5) + ')';
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      return;
+    }
+
+    var t = 0;
+    function frame() {
+      t += 1;
+      ctx.clearRect(0, 0, w, h);
+      particles.forEach(function (p) {
+        p.y -= p.speed / 60;
+        if (p.y < -10) { p.y = h + 10; p.x = Math.random() * w; }
+        var x = p.x + Math.sin(t / 90 + p.phase) * p.sway * 0.02;
+        ctx.beginPath();
+        if (p.ember) {
+          var glow = ctx.createRadialGradient(x, p.y, 0, x, p.y, p.r * 5);
+          glow.addColorStop(0, 'rgba(255,160,80,' + p.alpha + ')');
+          glow.addColorStop(1, 'rgba(255,160,80,0)');
+          ctx.fillStyle = glow;
+          ctx.arc(x, p.y, p.r * 5, 0, Math.PI * 2);
+        } else {
+          ctx.fillStyle = 'rgba(200,210,180,' + (p.alpha * 0.5) + ')';
+          ctx.arc(x, p.y, p.r, 0, Math.PI * 2);
+        }
+        ctx.fill();
+      });
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
   })();
 </script>
