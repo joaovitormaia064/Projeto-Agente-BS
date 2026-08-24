@@ -196,7 +196,7 @@ export function Portfolio() {
   };
 
   return (
-    <section id="portfolio" className="overflow-hidden border-t border-border py-24 md:py-32">
+    <section id="portfolio" className="overflow-hidden border-t border-border py-20 md:py-24">
       <div className="mx-auto max-w-6xl px-6">
         <Reveal className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
           <div>
