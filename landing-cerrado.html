@@ -682,44 +682,118 @@
     <div class="planta-layout fade-in" style="margin-top:2.25rem;">
       <div>
         <div class="specimen-frame">
-          <svg viewBox="0 0 280 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Tigela de barro vista de cima, cheia de castanhas de baru torradas, sobre uma esteira de juta">
+          <svg viewBox="0 0 320 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Tigela de madeira cheia de castanhas de baru torradas, brilhantes, sobre uma esteira de juta em uma mesa de tábuas">
             <defs>
-              <radialGradient id="bowlRim" cx="50%" cy="42%" r="65%">
-                <stop offset="0%" stop-color="#6b4a30"/>
-                <stop offset="70%" stop-color="#4a3320"/>
-                <stop offset="100%" stop-color="#2e2013"/>
-              </radialGradient>
-              <radialGradient id="bowlInner" cx="48%" cy="40%" r="60%">
-                <stop offset="0%" stop-color="#2a1f16"/>
-                <stop offset="100%" stop-color="#171009"/>
-              </radialGradient>
-              <linearGradient id="nutGrad" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#7a5334"/>
-                <stop offset="55%" stop-color="#4b2f1c"/>
-                <stop offset="100%" stop-color="#2c1a10"/>
+              <linearGradient id="plank" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#4a3a26"/>
+                <stop offset="100%" stop-color="#2e2314"/>
               </linearGradient>
+              <radialGradient id="vignette" cx="50%" cy="38%" r="75%">
+                <stop offset="0%" stop-color="#000000" stop-opacity="0"/>
+                <stop offset="100%" stop-color="#000000" stop-opacity="0.55"/>
+              </radialGradient>
+              <linearGradient id="bowlOuter" x1="0" y1="0" x2="1" y2="0.15">
+                <stop offset="0%" stop-color="#5e4127"/>
+                <stop offset="45%" stop-color="#4a3220"/>
+                <stop offset="100%" stop-color="#2c1d10"/>
+              </linearGradient>
+              <linearGradient id="bowlRimGrad" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#8a6440"/>
+                <stop offset="50%" stop-color="#6b4a2e"/>
+                <stop offset="100%" stop-color="#4a3220"/>
+              </linearGradient>
+              <radialGradient id="bowlWell" cx="50%" cy="30%" r="75%">
+                <stop offset="0%" stop-color="#241b12"/>
+                <stop offset="100%" stop-color="#120d08"/>
+              </radialGradient>
+              <radialGradient id="nutDark" cx="35%" cy="28%" r="75%">
+                <stop offset="0%" stop-color="#8a5c38"/>
+                <stop offset="35%" stop-color="#5c3a22"/>
+                <stop offset="100%" stop-color="#241408"/>
+              </radialGradient>
+              <radialGradient id="nutWarm" cx="35%" cy="28%" r="75%">
+                <stop offset="0%" stop-color="#a8703f"/>
+                <stop offset="40%" stop-color="#79462a"/>
+                <stop offset="100%" stop-color="#2e1a0c"/>
+              </radialGradient>
+              <radialGradient id="shine" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#fbe8c8" stop-opacity="0.85"/>
+                <stop offset="100%" stop-color="#fbe8c8" stop-opacity="0"/>
+              </radialGradient>
+              <pattern id="weave" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                <rect width="7" height="7" fill="#b89a6b"/>
+                <path d="M0 0 H7" stroke="#8f7448" stroke-width="1.6"/>
+                <path d="M0 0 V7" stroke="#8f7448" stroke-width="1.6" opacity="0.6"/>
+              </pattern>
+              <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
+                <feGaussianBlur stdDeviation="1.1"/>
+              </filter>
+              <filter id="grain">
+                <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" result="n"/>
+                <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.05 0"/>
+              </filter>
+              <clipPath id="clipWell">
+                <ellipse cx="160" cy="118" rx="97" ry="36"/>
+              </clipPath>
+              <path id="nutShape" d="M-8.4 0 C-8.4 -3.9 -3.7 -5 0 -5 C3.7 -5 8.4 -3.9 8.4 0 C8.4 3.9 3.7 5 0 5 C-3.7 5 -8.4 3.9 -8.4 0 Z"/>
             </defs>
-            <rect width="280" height="220" fill="#3a2c1d"/>
-            <g opacity="0.5" stroke="#241b12" stroke-width="1">
-              <path d="M0 20 H280 M0 45 H280 M0 70 H280 M0 95 H280 M0 120 H280 M0 145 H280 M0 170 H280 M0 195 H280"/>
-              <path d="M20 0 V220 M50 0 V220 M80 0 V220 M110 0 V220 M140 0 V220 M170 0 V220 M200 0 V220 M230 0 V220 M260 0 V220"/>
+
+            <rect width="320" height="300" fill="url(#plank)"/>
+            <g opacity="0.4" stroke="#1c140b" stroke-width="1.5">
+              <path d="M0 55 H320 M0 108 H320 M0 161 H320 M0 214 H320 M0 267 H320"/>
             </g>
-            <ellipse cx="140" cy="112" rx="118" ry="88" fill="url(#bowlRim)"/>
-            <ellipse cx="140" cy="108" rx="96" ry="70" fill="url(#bowlInner)"/>
+            <g opacity="0.18" stroke="#e9d8b8" stroke-width="1">
+              <path d="M14 30 Q160 24 306 34"/>
+              <path d="M10 190 Q160 184 310 196"/>
+              <path d="M18 250 Q160 244 300 256"/>
+            </g>
+
+            <ellipse cx="160" cy="238" rx="118" ry="42" fill="url(#weave)" transform="rotate(-2 160 238)"/>
+
+            <ellipse cx="160" cy="215" rx="112" ry="26" fill="#0a0805" opacity="0.45" filter="url(#soft)"/>
+
+            <path d="M55 150 C55 100 100 78 160 78 C220 78 265 100 265 150 C265 205 222 232 160 232 C98 232 55 205 55 150 Z" fill="url(#bowlOuter)"/>
+            <g opacity="0.35" stroke="#7a5b3a" stroke-width="1.4" fill="none">
+              <path d="M70 140 C70 185 108 218 160 220"/>
+              <path d="M250 140 C250 185 212 218 160 220"/>
+            </g>
+
             <g>
-              <ellipse cx="105" cy="88" rx="15" ry="9" fill="url(#nutGrad)" transform="rotate(-18 105 88)"/>
-              <ellipse cx="140" cy="80" rx="16" ry="9" fill="url(#nutGrad)" transform="rotate(8 140 80)"/>
-              <ellipse cx="175" cy="90" rx="15" ry="9" fill="url(#nutGrad)" transform="rotate(-25 175 90)"/>
-              <ellipse cx="118" cy="108" rx="16" ry="9.5" fill="url(#nutGrad)" transform="rotate(20 118 108)"/>
-              <ellipse cx="155" cy="110" rx="15" ry="9" fill="url(#nutGrad)" transform="rotate(-10 155 110)"/>
-              <ellipse cx="190" cy="115" rx="14" ry="8.5" fill="url(#nutGrad)" transform="rotate(30 190 115)"/>
-              <ellipse cx="97" cy="120" rx="14" ry="8" fill="url(#nutGrad)" transform="rotate(-5 97 120)"/>
-              <ellipse cx="130" cy="132" rx="16" ry="9" fill="url(#nutGrad)" transform="rotate(12 130 132)"/>
-              <ellipse cx="167" cy="135" rx="15" ry="8.5" fill="url(#nutGrad)" transform="rotate(-18 167 135)"/>
-              <ellipse cx="112" cy="145" rx="14" ry="8" fill="url(#nutGrad)" transform="rotate(24 112 145)"/>
-              <ellipse cx="148" cy="150" rx="15" ry="8.5" fill="url(#nutGrad)" transform="rotate(-8 148 150)"/>
+              <use href="#nutShape" fill="#8a6a3f" opacity="0.9" transform="translate(38,236) rotate(-12) scale(0.9)"/>
+              <use href="#nutShape" fill="url(#nutWarm)" transform="translate(38,236) rotate(-12) scale(0.9)"/>
+              <use href="#nutShape" fill="url(#nutDark)" transform="translate(58,248) rotate(24) scale(1.05)"/>
+              <use href="#nutShape" fill="url(#nutWarm)" transform="translate(80,240) rotate(-30) scale(0.85)"/>
+              <use href="#nutShape" fill="url(#nutDark)" transform="translate(268,244) rotate(18) scale(0.95)"/>
+              <use href="#nutShape" fill="url(#nutWarm)" transform="translate(288,236) rotate(-8) scale(0.8)"/>
             </g>
-            <ellipse cx="140" cy="112" rx="118" ry="88" fill="none" stroke="#7a5b3a" stroke-width="2" opacity="0.4"/>
+
+            <g clip-path="url(#clipWell)">
+              <ellipse cx="160" cy="118" rx="100" ry="40" fill="url(#bowlWell)"/>
+              <g>
+                <use href="#nutShape" fill="url(#nutDark)" transform="translate(112,98) rotate(-20) scale(1.15)"/>
+                <use href="#nutShape" fill="url(#nutWarm)" transform="translate(146,90) rotate(10) scale(1.2)"/>
+                <use href="#nutShape" fill="url(#nutDark)" transform="translate(182,96) rotate(-32) scale(1.1)"/>
+                <use href="#nutShape" fill="url(#nutWarm)" transform="translate(214,104) rotate(22) scale(1.05)"/>
+                <use href="#nutShape" fill="url(#nutDark)" transform="translate(126,114) rotate(26) scale(1.2)"/>
+                <use href="#nutShape" fill="url(#nutWarm)" transform="translate(160,112) rotate(-14) scale(1.25)"/>
+                <use href="#nutShape" fill="url(#nutDark)" transform="translate(196,118) rotate(15) scale(1.1)"/>
+                <use href="#nutShape" fill="url(#nutWarm)" transform="translate(96,124) rotate(-6) scale(1)"/>
+                <use href="#nutShape" fill="url(#nutDark)" transform="translate(140,130) rotate(18) scale(1.15)"/>
+                <use href="#nutShape" fill="url(#nutWarm)" transform="translate(176,132) rotate(-24) scale(1.1)"/>
+                <use href="#nutShape" fill="url(#nutDark)" transform="translate(210,128) rotate(30) scale(0.95)"/>
+                <use href="#nutShape" fill="url(#nutWarm)" transform="translate(112,140) rotate(-16) scale(1)"/>
+                <use href="#nutShape" fill="url(#nutDark)" transform="translate(155,144) rotate(10) scale(1.05)"/>
+                <use href="#nutShape" fill="url(#nutWarm)" transform="translate(192,142) rotate(-20) scale(0.95)"/>
+                <ellipse cx="128" cy="100" rx="4.5" ry="2.4" fill="url(#shine)" transform="rotate(-20 128 100)"/>
+                <ellipse cx="168" cy="104" rx="5" ry="2.6" fill="url(#shine)" transform="rotate(10 168 104)"/>
+                <ellipse cx="150" cy="122" rx="5.5" ry="2.8" fill="url(#shine)" transform="rotate(-14 150 122)"/>
+                <ellipse cx="200" cy="126" rx="4" ry="2.2" fill="url(#shine)" transform="rotate(20 200 126)"/>
+              </g>
+            </g>
+
+            <path d="M55 150 C55 138 63 128 75 122" fill="none" stroke="#a9835a" stroke-width="2" opacity="0.5"/>
+            <rect width="320" height="300" fill="url(#vignette)"/>
+            <rect width="320" height="300" filter="url(#grain)" opacity="0.5"/>
           </svg>
         </div>
         <div class="specimen-caption">
@@ -732,33 +806,65 @@
         <div class="process">
           <div class="stage">
             <div class="stage-art">
-              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <ellipse cx="20" cy="21" rx="10" ry="16" fill="#8a6a3f" stroke="#c9a877" stroke-width="1.4"/>
-                <path d="M20 5 V37" stroke="#6b4f2c" stroke-width="1" opacity="0.6"/>
+              <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="podSkin" x1="0.2" y1="0" x2="0.9" y2="1">
+                    <stop offset="0%" stop-color="#a68a56"/>
+                    <stop offset="55%" stop-color="#8a7040"/>
+                    <stop offset="100%" stop-color="#5f4d29"/>
+                  </linearGradient>
+                </defs>
+                <path d="M20 4 C27 4 30.5 13 30 21 C29.5 30 25 35 20 36 C15 35 10.5 30 10 21 C9.5 13 13 4 20 4 Z" fill="url(#podSkin)"/>
+                <g fill="#4a3c20" opacity="0.55">
+                  <circle cx="16" cy="14" r="0.8"/><circle cx="24" cy="17" r="0.7"/><circle cx="14" cy="22" r="0.7"/>
+                  <circle cx="26" cy="24" r="0.8"/><circle cx="19" cy="28" r="0.7"/><circle cx="22" cy="11" r="0.6"/>
+                </g>
+                <path d="M17 6 C14 12 13.5 26 19 34" stroke="#c9ac72" stroke-width="0.9" fill="none" opacity="0.5"/>
               </svg>
             </div>
             <h3>1. Vagem seca</h3>
-            <p>Cai da árvore inteira, com casca lenhosa que protege as castanhas por dentro.</p>
+            <p>Cai da árvore inteira, com casca lenhosa e fibrosa que protege as castanhas por dentro.</p>
           </div>
           <div class="stage">
             <div class="stage-art">
-              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9 22 C9 12 14 6 20 6 C26 6 31 12 31 22" stroke="#c9a877" stroke-width="1.4"/>
-                <ellipse cx="15" cy="24" rx="5.5" ry="7" fill="#4b2f1c"/>
-                <ellipse cx="25" cy="26" rx="5.5" ry="7" fill="#4b2f1c"/>
+              <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="podCut" x1="0.2" y1="0" x2="0.9" y2="1">
+                    <stop offset="0%" stop-color="#a68a56"/>
+                    <stop offset="100%" stop-color="#6b552c"/>
+                  </linearGradient>
+                  <radialGradient id="podPulp" cx="45%" cy="40%" r="65%">
+                    <stop offset="0%" stop-color="#e8d9ad"/>
+                    <stop offset="100%" stop-color="#c3aa73"/>
+                  </radialGradient>
+                  <radialGradient id="podCavity" cx="45%" cy="40%" r="65%">
+                    <stop offset="0%" stop-color="#4a3018"/>
+                    <stop offset="100%" stop-color="#1c1108"/>
+                  </radialGradient>
+                </defs>
+                <path d="M20 4 C27 4 30.5 13 30 21 C29.5 30 25 35 20 36 C15 35 10.5 30 10 21 C9.5 13 13 4 20 4 Z" fill="url(#podCut)"/>
+                <ellipse cx="20" cy="19" rx="8.4" ry="12.5" fill="url(#podPulp)"/>
+                <ellipse cx="20" cy="19" rx="4.6" ry="7" fill="url(#podCavity)"/>
               </svg>
             </div>
             <h3>2. Castanha exposta</h3>
-            <p>Quebrada à mão, revela as castanhas escuras que ficam guardadas lá dentro.</p>
+            <p>Quebrada à mão, revela a polpa fibrosa e a castanha escura guardada no centro.</p>
           </div>
           <div class="stage">
             <div class="stage-art">
-              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="20" cy="20" r="13" fill="#4b2f1c"/>
-                <circle cx="15" cy="15" r="1.6" fill="#8a6a3f"/>
-                <circle cx="24" cy="24" r="1.4" fill="#8a6a3f"/>
-                <circle cx="26" cy="14" r="1.2" fill="#8a6a3f"/>
-                <circle cx="14" cy="25" r="1.2" fill="#8a6a3f"/>
+              <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <radialGradient id="powderMound" cx="42%" cy="30%" r="70%">
+                    <stop offset="0%" stop-color="#9c7a4c"/>
+                    <stop offset="100%" stop-color="#5c4426"/>
+                  </radialGradient>
+                </defs>
+                <ellipse cx="20" cy="30" rx="14" ry="4.2" fill="#241a0e" opacity="0.5"/>
+                <path d="M8 27 C8 19 13 13 20 13 C27 13 32 19 32 27 C32 30.5 26.6 32 20 32 C13.4 32 8 30.5 8 27 Z" fill="url(#powderMound)"/>
+                <g fill="#d9bd88" opacity="0.7">
+                  <circle cx="15" cy="21" r="0.9"/><circle cx="22" cy="18" r="0.7"/><circle cx="26" cy="23" r="0.8"/>
+                  <circle cx="18" cy="25" r="0.6"/><circle cx="24" cy="27" r="0.7"/><circle cx="12" cy="25" r="0.6"/>
+                </g>
               </svg>
             </div>
             <h3>3. Torra e moagem</h3>
