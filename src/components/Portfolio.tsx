@@ -1,10 +1,18 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useReducedMotion } from "framer-motion";
 import { ArrowUpRight, FolderSearch, X } from "lucide-react";
 import { SectionLabel } from "./SectionLabel";
 import { Reveal } from "./Reveal";
 import { PORTFOLIO_FILTERS, PROJECTS, type Project } from "@/data/portfolio";
+
+/** Quanto o card se inclina seguindo o ponteiro, e o quanto ele avança. */
+const GIRO_Y = 9; // graus no eixo vertical
+const GIRO_X = 7; // graus no eixo horizontal
+const AVANCO = 38; // pixels na direção de quem olha
+const PERSPECTIVA = 1000;
+const SUAVE = "cubic-bezier(0.22, 1, 0.36, 1)";
 
 type CardProps = {
   projeto: Project;
@@ -18,13 +26,29 @@ type CardProps = {
 
 function ProjectCard({ projeto, indice, ativo, algumAtivo, onOpen, onEnter, onLeave }: CardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
-  const [ring, setRing] = useState({ x: 0, y: 0, on: false });
+  const semMovimento = useReducedMotion();
+  // nx e ny vão de -1 a 1 e dizem onde o ponteiro está dentro do card.
+  const [ponteiro, setPonteiro] = useState({ x: 0, y: 0, nx: 0, ny: 0, on: false });
 
-  const moveRing = (e: React.MouseEvent) => {
+  const seguirPonteiro = (e: React.MouseEvent) => {
     const box = cardRef.current?.getBoundingClientRect();
     if (!box) return;
-    setRing({ x: e.clientX - box.left, y: e.clientY - box.top, on: true });
+    const x = e.clientX - box.left;
+    const y = e.clientY - box.top;
+    setPonteiro({
+      x,
+      y,
+      nx: (x / box.width) * 2 - 1,
+      ny: (y / box.height) * 2 - 1,
+      on: true,
+    });
   };
+
+  // O card levanta e gira na direção do ponteiro, como uma carta sendo escolhida.
+  const inclinacao =
+    ativo && ponteiro.on && !semMovimento
+      ? `perspective(${PERSPECTIVA}px) rotateY(${(ponteiro.nx * GIRO_Y).toFixed(2)}deg) rotateX(${(-ponteiro.ny * GIRO_X).toFixed(2)}deg) translateZ(${AVANCO}px)`
+      : undefined;
 
   return (
     <div
@@ -39,35 +63,61 @@ function ProjectCard({ projeto, indice, ativo, algumAtivo, onOpen, onEnter, onLe
         }
       }}
       onMouseEnter={onEnter}
-      onMouseMove={moveRing}
+      onMouseMove={seguirPonteiro}
       onMouseLeave={() => {
-        setRing((r) => ({ ...r, on: false }));
+        setPonteiro((p) => ({ ...p, on: false }));
         onLeave();
       }}
-      className={`group relative aspect-[3/4] w-[78vw] flex-none cursor-pointer select-none overflow-hidden rounded-2xl transition-[transform,opacity,filter] duration-500 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent sm:w-[46%] lg:w-[32%] ${
+      style={{
+        transform: inclinacao,
+        transitionTimingFunction: SUAVE,
+        // Sem isto o navegador recalcula o card inteiro a cada grau de giro.
+        willChange: ativo ? "transform" : undefined,
+        backfaceVisibility: "hidden",
+      }}
+      className={`group relative aspect-[3/4] w-[78vw] flex-none cursor-pointer select-none overflow-hidden rounded-[15px] transition-[transform,opacity,filter,box-shadow] duration-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent sm:w-[46%] lg:w-[32%] ${
         ativo
-          ? "z-10 scale-[1.04] shadow-[0_28px_60px_-20px_rgba(0,0,0,0.75)]"
+          ? "z-10 shadow-[0_36px_70px_-24px_rgba(0,0,0,0.85)]"
           : algumAtivo
-            ? "scale-[0.95] opacity-55"
-            : "scale-100"
+            ? "opacity-45 md:blur-[1.5px]"
+            : ""
       }`}
     >
       <div
         style={{ backgroundImage: `url(${projeto.imagem})` }}
         className="absolute inset-0 origin-top bg-[length:100%_auto] bg-top transition-[background-position] duration-[9000ms] ease-linear group-hover:bg-bottom"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/70 to-bg/30 transition-all duration-500 group-hover:via-bg/35 group-hover:to-transparent" />
+
+      {/* O véu escurece só o pé do card enquanto ninguém escolheu; quando o
+          ponteiro chega, ele recua e a captura aparece limpa. */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_top,var(--color-bg)_0%,rgba(13,14,16,0.95)_42%,rgba(13,14,16,0.55)_66%,transparent_100%)] transition-all duration-500 [@media(hover:hover)]:bg-[linear-gradient(to_top,rgba(13,14,16,0.6)_0%,rgba(13,14,16,0.15)_40%,transparent_100%)] [@media(hover:hover)]:group-hover:bg-[linear-gradient(to_top,var(--color-bg)_0%,rgba(13,14,16,0.75)_38%,rgba(13,14,16,0.25)_62%,transparent_100%)]" />
+
+      {/* Brilho que corre pela superfície acompanhando o ponteiro. É o que dá a
+          impressão de que o card tem volume e está inclinando de verdade. */}
+      {!semMovimento && (
+        <div
+          aria-hidden
+          style={{
+            background: `radial-gradient(200px circle at ${ponteiro.x}px ${ponteiro.y}px, rgba(255,255,255,0.14), transparent 70%)`,
+          }}
+          className={`pointer-events-none absolute inset-0 transition-opacity duration-300 ${
+            ponteiro.on ? "opacity-100" : "opacity-0"
+          }`}
+        />
+      )}
 
       <div
         aria-hidden
-        style={{ transform: `translate(${ring.x}px, ${ring.y}px) translate(-50%, -50%)` }}
+        style={{ transform: `translate(${ponteiro.x}px, ${ponteiro.y}px) translate(-50%, -50%)` }}
         className={`pointer-events-none absolute left-0 top-0 h-14 w-14 rounded-full border-2 border-fg/90 transition-opacity duration-300 ${
-          ring.on ? "opacity-100" : "opacity-0"
+          ponteiro.on ? "opacity-100" : "opacity-0"
         }`}
       />
 
-      <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
-        <h3 className="font-display text-2xl font-semibold leading-[1.15] tracking-tight text-fg transition-transform duration-500 group-hover:-translate-y-1">
+      {/* No celular não existe ponteiro, então a identificação fica sempre à
+          mostra. Onde existe, ela sobe junto com o card ao ser escolhido. */}
+      <div className="absolute inset-x-0 bottom-0 p-5 transition-all duration-500 sm:p-6 [@media(hover:hover)]:translate-y-2 [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:translate-y-0 [@media(hover:hover)]:group-hover:opacity-100">
+        <h3 className="font-display text-2xl font-semibold leading-[1.15] tracking-tight text-fg">
           {projeto.nome}
         </h3>
         <p className="mt-1.5 text-xs text-fg-muted">{projeto.rotulo}</p>
@@ -192,7 +242,7 @@ export function Portfolio() {
   };
 
   return (
-    <section id="portfolio" className="overflow-hidden border-t border-border py-24 md:py-28">
+    <section id="portfolio" className="border-t border-border py-24 md:py-28">
       <div className="mx-auto max-w-6xl px-6">
         <Reveal className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
           <div>
@@ -223,6 +273,10 @@ export function Portfolio() {
 
       {projetos.length > 0 ? (
         <Reveal delay={0.1}>
+          {/* O trilho atravessa a tela inteira: o primeiro card nasce alinhado
+              com o título e os demais saem pelas bordas, sem ficarem presos
+              dentro de uma caixa. A folga vertical dá espaço para o card
+              levantar sem ser cortado. */}
           <div
             ref={trackRef}
             onPointerDown={onPointerDown}
@@ -230,7 +284,7 @@ export function Portfolio() {
             onPointerUp={onPointerUp}
             onPointerCancel={onPointerUp}
             style={{ filter: blur ? `blur(${blur.toFixed(2)}px)` : undefined }}
-            className="mt-14 flex cursor-grab gap-5 overflow-x-auto px-[max(1.5rem,calc((100vw-72rem)/2+1.5rem))] py-10 active:cursor-grabbing [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="mt-12 flex cursor-grab gap-5 overflow-x-auto overflow-y-hidden px-[max(1.5rem,calc((100vw-72rem)/2+1.5rem))] py-12 [transform-style:preserve-3d] active:cursor-grabbing [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
             {projetos.map((projeto, i) => (
               <ProjectCard
