@@ -148,11 +148,36 @@ body {
   animation: pulse-ring 4.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
+/* Quem pede menos movimento não quer a página morta. Sai o que se desloca
+   sozinho ou percorre distância; ficam os fades e as mudanças de cor.
+   O Framer Motion cuida da sua parte pelo useReducedMotion. */
 @media (prefers-reduced-motion: reduce) {
   * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  /* movimento contínuo, que roda sem ninguém pedir */
+  .animate-desfilar,
+  .animate-flutuar,
+  .animate-scroll-cue,
+  .animate-pulse-ring {
+    animation: none !important;
+  }
+
+  .animate-scroll-cue {
+    opacity: 1;
+    transform: translateY(100%);
+  }
+
+  .animate-pulse-ring {
+    display: none;
+  }
+
+  /* respostas de hover ficam, mas sem deslocamento */
+  .group:hover .group-hover\:scale-110,
+  .group:hover .group-hover\:-translate-y-1,
+  [class*="hover:-translate-y"]:hover,
+  [class*="hover:scale-"]:hover {
+    transform: none !important;
   }
 }
