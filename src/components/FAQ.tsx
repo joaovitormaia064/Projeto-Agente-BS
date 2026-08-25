@@ -45,7 +45,8 @@ const perguntas = [
 ];
 
 export function FAQ() {
-  const [aberto, setAberto] = useState<number | null>(0);
+  // Todas fechadas ao abrir a página: quem chega decide o que quer ler.
+  const [aberto, setAberto] = useState<number | null>(null);
 
   return (
     <section id="faq" className="border-t border-border py-24 md:py-28">
