@@ -29,6 +29,16 @@ export const PROJECTS: Project[] = [
     tecnologias: ["HTML", "CSS", "JavaScript"],
   },
   {
+    nome: "Cerrado",
+    categoria: "Landing Pages",
+    rotulo: "Landing Page",
+    imagem: "/portfolio/cerrado-full.jpg",
+    preview: "/portfolio-sites/cerrado.html",
+    descricao:
+      "Página de vendas de uma proteína vegetal de castanha de baru, do argumento à oferta.",
+    tecnologias: ["HTML", "CSS", "JavaScript"],
+  },
+  {
     nome: "Cafeteria Âncora",
     categoria: "Institucional",
     rotulo: "Site Institucional",
