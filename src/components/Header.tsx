@@ -23,8 +23,8 @@ export function Header() {
           : "border-b border-transparent bg-transparent"
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 md:h-20">
-        <a href="#top" className="font-display text-xl font-semibold tracking-tight">
+      <div className="mx-auto flex h-12 max-w-7xl items-center justify-between px-6 md:h-20">
+        <a href="#top" className="font-display text-lg font-semibold tracking-tight md:text-xl">
           {BRAND_NAME}
           <span className="text-accent">.</span>
         </a>
@@ -58,9 +58,9 @@ export function Header() {
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-label={open ? "Fechar menu" : "Abrir menu"}
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-border text-fg md:hidden"
+          className="flex h-8 w-8 items-center justify-center rounded-full border border-border text-fg md:hidden"
         >
-          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
         </button>
       </div>
 
