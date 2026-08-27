@@ -31,7 +31,7 @@ export function Hero() {
     <section
       id="top"
       ref={sectionRef}
-      className="relative flex min-h-[92svh] items-center overflow-hidden pt-28 pb-20"
+      className="relative flex min-h-[92svh] items-center overflow-hidden pt-10 pb-16 md:pt-28 md:pb-20"
     >
       <motion.div
         style={reduceMotion ? undefined : { y: dotfieldY }}
